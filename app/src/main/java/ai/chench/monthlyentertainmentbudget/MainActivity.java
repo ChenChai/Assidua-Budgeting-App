@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView remainingMoneyTextView;
+    private TextView balanceTextView;
 
     private EditText expenditureCostEditText;
     private EditText expenditureNameEditText;
@@ -83,15 +83,22 @@ public class MainActivity extends AppCompatActivity {
                 expenditureValue, Calendar.getInstance().getTime()));
         adapter.notifyDataSetChanged();
         saveExpenditures();
-
-        // update the value in preferences.
-
         // update the view
-        remainingMoneyTextView.setText(String.format(Locale.CANADA, "$%.2f", balance));
+        updateBalanceView();
     };
 
     private View.OnClickListener undoClickListener = (View v) -> {
-        // TODO implement
+        if (expenditures.size() > 0) {
+            // get most recent expenditure
+            Expenditure undoExpenditure = expenditures.get(expenditures.size() - 1);
+
+            balance += undoExpenditure.value;
+
+            expenditures.remove(expenditures.size() - 1);
+            saveExpenditures();
+            updateBalanceView();
+            adapter.notifyDataSetChanged();
+        }
     };
 
     @Override
@@ -104,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
 
         loadExpenditures();
 
-        remainingMoneyTextView = findViewById(R.id.remainingMoneyTextView);
-        remainingMoneyTextView.setText(String.format(Locale.CANADA, "$%.2f", balance));
+        balanceTextView = findViewById(R.id.remainingMoneyTextView);
+        updateBalanceView();
 
         expenditureCostEditText = findViewById(R.id.expenditureCostEditText);
         expenditureNameEditText = findViewById(R.id.expenditureNameEditText);
@@ -126,6 +133,11 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setStackFromEnd(true);
 
         recyclerView.setLayoutManager(layoutManager);
+    }
+
+    // this function updates the textview of the current balance
+    private void updateBalanceView() {
+        balanceTextView.setText(String.format(Locale.CANADA, "$%.2f", balance));
     }
 
     // These two functions save and load the current balance and expenditure list from shared preferences.
