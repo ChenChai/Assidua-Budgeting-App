@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         saveExpenditures();
         // update the view
         updateBalanceView();
+
+        expenditureNameEditText.setText("");
+        expenditureCostEditText.setText("");
     };
 
     private View.OnClickListener undoClickListener = (View v) -> {
@@ -137,6 +140,15 @@ public class MainActivity extends AppCompatActivity {
 
     // this function updates the textview of the current balance
     private void updateBalanceView() {
+        // change the color of the textView based on whether the balance is positive or negative
+        if (Math.round(balance) == 0) {
+            balanceTextView.setTextColor(getResources().getColor(R.color.colorNeutral));
+        } else if (balance > 0) {
+            balanceTextView.setTextColor(getResources().getColor(R.color.colorPositive));
+        } else {
+            balanceTextView.setTextColor(getResources().getColor(R.color.colorNegative));
+        }
+        
         balanceTextView.setText(String.format(Locale.CANADA, "$%.2f", balance));
     }
 
