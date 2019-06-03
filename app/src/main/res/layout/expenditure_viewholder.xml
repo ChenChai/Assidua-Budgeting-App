@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/expenditureCost"
+        android:id="@+id/expenditureValue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -35,9 +35,9 @@
         app:layout_constraintTop_toBottomOf="@+id/expenditureName" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/expenditureDate"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -48,6 +48,6 @@
         android:text="January 1st, 2019"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/expenditureCost"
+        app:layout_constraintStart_toEndOf="@+id/expenditureValue"
         app:layout_constraintTop_toBottomOf="@+id/expenditureName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package ai.chench.monthlyentertainmentbudget;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -15,11 +16,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-
     private TextView remainingMoneyTextView;
 
     private EditText expenditureCostEditText;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Button undoExpenditureButton;
 
     private RecyclerView recyclerView;
+    private ExpenditureAdapter adapter;
 
     private float balance;
     private List<Expenditure> expenditures;
@@ -36,10 +39,12 @@ public class MainActivity extends AppCompatActivity {
     class Expenditure {
         private float value;
         private String name;
+        private Date date;
 
-        public Expenditure(String name, float value) {
+        public Expenditure(String name, float value, Date date) {
             this.name = name;
             this.value = value;
+            this.date = date;
         }
 
         public float getValue() {
@@ -54,22 +59,33 @@ public class MainActivity extends AppCompatActivity {
         public void setName(String name) {
             this.name = name;
         }
+        public Date getDate() {
+            return date;
+        }
+        public void setDate(Date date) {
+            this.date = date;
+        }
     }
 
     private SharedPreferences sharedPreferences;
 
     private View.OnClickListener addClickListener = (View v) -> {
-        float expenditure;
+        float expenditureValue;
         try {
-            expenditure = Float.parseFloat(expenditureCostEditText.getText().toString());
+            expenditureValue = Float.parseFloat(expenditureCostEditText.getText().toString());
         } catch (NumberFormatException e) {
             expenditureCostEditText.setError(getString(R.string.error_not_a_number));
             return;
         }
-        balance -= expenditure;
+        balance -= expenditureValue;
+
+        expenditures.add(new Expenditure(expenditureNameEditText.getText().toString(),
+                expenditureValue, Calendar.getInstance().getTime()));
+        adapter.notifyDataSetChanged();
+        saveExpenditures();
 
         // update the value in preferences.
-        sharedPreferences.edit().putFloat(getString(R.string.balance_remaining_key), balance).apply();
+
         // update the view
         remainingMoneyTextView.setText(String.format(Locale.CANADA, "$%.2f", balance));
     };
@@ -86,31 +102,46 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
-        balance = sharedPreferences.getFloat(getString(R.string.balance_remaining_key), 0f);
         loadExpenditures();
 
         remainingMoneyTextView = findViewById(R.id.remainingMoneyTextView);
         remainingMoneyTextView.setText(String.format(Locale.CANADA, "$%.2f", balance));
 
         expenditureCostEditText = findViewById(R.id.expenditureCostEditText);
+        expenditureNameEditText = findViewById(R.id.expenditureNameEditText);
 
         addExpenditureButton = findViewById(R.id.addExpenditureButton);
         addExpenditureButton.setOnClickListener(addClickListener);
 
         undoExpenditureButton = findViewById(R.id.undoExpenditureButton);
         undoExpenditureButton.setOnClickListener(undoClickListener);
+
+        RecyclerView recyclerView = findViewById(R.id.expendituresRecyclerView);
+        adapter = new ExpenditureAdapter(expenditures);
+
+        recyclerView.setAdapter(adapter);
+
+        // reversed layout so most recent items show up at the top
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
+        layoutManager.setStackFromEnd(true);
+
+        recyclerView.setLayoutManager(layoutManager);
     }
 
-    // saves the list of expenditures into the
+    // These two functions save and load the current balance and expenditure list from shared preferences.
     private void saveExpenditures() {
         Gson gson = new Gson();
         sharedPreferences.edit()
                 .putString(getString(R.string.expenditures_key),
                         gson.toJson(expenditures,new TypeToken<List<Expenditure>>(){}.getType()))
+                .putFloat(getString(R.string.balance_remaining_key), balance)
                 .apply();
     }
+
     private void loadExpenditures() {
         String expendituresString = sharedPreferences.getString(getString(R.string.expenditures_key), null);
+
+        balance = sharedPreferences.getFloat(getString(R.string.balance_remaining_key), 0f);
         if (expendituresString == null) {
             expenditures = new ArrayList<>();
         } else {
