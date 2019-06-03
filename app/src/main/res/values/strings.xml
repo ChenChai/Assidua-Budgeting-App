@@ -10,6 +10,7 @@
     <string name="add_expenditure_name">Name (Optional)</string>
     <string name="undo_button_text">Undo</string>
     <string name="add_button_text">Commit</string>
+    <string name="untitled_expenditure">Untitled</string>
 
     <string name="error_not_a_number">Please enter a number.</string>
 </resources>

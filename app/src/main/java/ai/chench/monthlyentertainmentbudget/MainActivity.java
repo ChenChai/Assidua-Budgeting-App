@@ -78,8 +78,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         balance -= expenditureValue;
+        String name = expenditureNameEditText.getText().toString().trim();
 
-        expenditures.add(new Expenditure(expenditureNameEditText.getText().toString(),
+        expenditures.add(new Expenditure(name.equals("") ? getString(R.string.untitled_expenditure) : name,
                 expenditureValue, Calendar.getInstance().getTime()));
         adapter.notifyDataSetChanged();
         saveExpenditures();
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             balanceTextView.setTextColor(getResources().getColor(R.color.colorNegative));
         }
-        
+
         balanceTextView.setText(String.format(Locale.CANADA, "$%.2f", balance));
     }
 
