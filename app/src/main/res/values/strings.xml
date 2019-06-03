@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Monthly Entertainment Budget</string>
+    <string name="remaining_budget">Remaining Budget:</string>
+    <string name="add_expenditure_edittext">Add expenditure &#8230;</string>
+    <string name="undo_button_text">Undo</string>
+    <string name="add_button_text">Commit</string>
+</resources>
