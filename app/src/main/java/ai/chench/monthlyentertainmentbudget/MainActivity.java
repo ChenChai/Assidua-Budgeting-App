@@ -22,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView remainingMoneyTextView;
 
-    private EditText addExpenditureEditText;
+    private EditText expenditureCostEditText;
+    private EditText expenditureNameEditText;
+
     private Button addExpenditureButton;
     private Button undoExpenditureButton;
 
@@ -59,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener addClickListener = (View v) -> {
         float expenditure;
         try {
-            expenditure = Float.parseFloat(addExpenditureEditText.getText().toString());
+            expenditure = Float.parseFloat(expenditureCostEditText.getText().toString());
         } catch (NumberFormatException e) {
-            addExpenditureEditText.setError(getString(R.string.error_not_a_number));
+            expenditureCostEditText.setError(getString(R.string.error_not_a_number));
             return;
         }
         balance -= expenditure;
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         remainingMoneyTextView = findViewById(R.id.remainingMoneyTextView);
         remainingMoneyTextView.setText(String.format(Locale.CANADA, "$%.2f", balance));
 
-        addExpenditureEditText = findViewById(R.id.addExpenditureEditText);
+        expenditureCostEditText = findViewById(R.id.expenditureCostEditText);
 
         addExpenditureButton = findViewById(R.id.addExpenditureButton);
         addExpenditureButton.setOnClickListener(addClickListener);
