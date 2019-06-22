@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Locale;
 
-import ai.chench.monthlyentertainmentbudget.MainActivity.Expenditure;
-
 public class ExpenditureAdapter extends RecyclerView.Adapter<ExpenditureAdapter.ViewHolder> {
     static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView expenditureName;
