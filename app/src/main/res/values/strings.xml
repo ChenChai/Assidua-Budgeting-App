@@ -13,4 +13,5 @@
     <string name="untitled_expenditure">Untitled</string>
 
     <string name="error_not_a_number">Please enter a number.</string>
+    <string name="error_number_too_big">Please enter a smaller number.</string>
 </resources>

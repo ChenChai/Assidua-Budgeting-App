@@ -51,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
             expenditureCostEditText.setError(getString(R.string.error_not_a_number));
             return;
         }
+        if (Float.isInfinite(expenditureValue) || Float.isNaN(expenditureValue)) {
+            expenditureCostEditText.setError(getString(R.string.error_number_too_big));
+            return;
+        }
 
         String name = expenditureNameEditText.getText().toString().trim();
 
