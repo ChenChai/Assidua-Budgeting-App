@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel.getExpenditures().observe(this, expenditures -> {
             adapter.notifyDataSetChanged();
-            Log.e("CHEN", "Expenditures Changed!");
         });
 
         recyclerView.setAdapter(adapter);
