@@ -1,4 +1,4 @@
-package ai.chench.monthlyentertainmentbudget;
+package ai.chench.assidua;
 
 import android.app.Application;
 import android.content.Context;
@@ -7,13 +7,11 @@ import android.content.SharedPreferences;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ExpenditureViewModel extends AndroidViewModel {

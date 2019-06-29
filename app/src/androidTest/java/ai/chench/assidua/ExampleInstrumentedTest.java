@@ -1,4 +1,4 @@
-package ai.chench.monthlyentertainmentbudget;
+package ai.chench.assidua;
 
 import android.content.Context;
 
