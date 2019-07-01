@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ExpenditureViewModel extends AndroidViewModel {
 
@@ -76,7 +77,7 @@ public class ExpenditureViewModel extends AndroidViewModel {
                         gson.toJson(expenditures.getValue(), new TypeToken<List<Expenditure>>(){}.getType()))
                 .putString(getApplication().getString(R.string.balance_remaining_key),
                         // put the balance in as a big decimal rounded to two decimal places.
-                        balance.getValue().setScale(2, RoundingMode.HALF_EVEN).toString())
+                        String.format(Locale.CANADA, balance.getValue().setScale(2, RoundingMode.HALF_EVEN).toString()))
                 .apply();
     }
 

@@ -62,7 +62,7 @@ class BudgetFragment : Fragment() {
                 remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorNegative));
             }
 
-            remainingMoneyTextView.text = (balance.setScale(2, RoundingMode.HALF_DOWN).toString())
+            remainingMoneyTextView.text = String.format(Locale.CANADA, balance.setScale(2, RoundingMode.HALF_DOWN).toString())
             adapter.notifyDataSetChanged()
         })
 

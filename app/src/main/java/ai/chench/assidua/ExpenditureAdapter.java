@@ -43,7 +43,9 @@ public class ExpenditureAdapter extends RecyclerView.Adapter<ExpenditureAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Expenditure expenditure = expenditures.get(position);
         holder.expenditureName.setText(expenditure.getName());
-        holder.expenditureValue.setText(expenditure.getValue().setScale(2, RoundingMode.HALF_DOWN).toString());
+
+        // use String.format here to set locale
+        holder.expenditureValue.setText(String.format(Locale.CANADA, expenditure.getValue().setScale(2, RoundingMode.HALF_DOWN).toString()));
         holder.expenditureDate.setText(expenditure.getDate().toString());
     }
 
