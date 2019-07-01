@@ -1,22 +1,23 @@
 package ai.chench.assidua;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Expenditure {
-    private float value;
+    private BigDecimal value;
     private String name;
     private Date date;
 
-    public Expenditure(String name, float value, Date date) {
+    public Expenditure(String name, BigDecimal value, Date date) {
         this.name = name;
         this.value = value;
         this.date = date;
     }
 
-    public float getValue() {
+    public BigDecimal getValue() {
         return value;
     }
-    public void setValue(float value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
     public String getName() {

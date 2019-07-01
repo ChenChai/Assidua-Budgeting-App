@@ -11,15 +11,18 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ExpenditureViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Expenditure>> expenditures = new MutableLiveData<>();
     private SharedPreferences sharedPreferences;
 
-    private MutableLiveData<Float> balance = new MutableLiveData<>();
+    private MutableLiveData<BigDecimal> balance = new MutableLiveData<>();
 
     public ExpenditureViewModel(Application application) {
         super(application);
@@ -36,14 +39,15 @@ public class ExpenditureViewModel extends AndroidViewModel {
             expenditures.setValue(gson.fromJson(expendituresString, new TypeToken<List<Expenditure>>(){}.getType()));
         }
 
-        balance.setValue(sharedPreferences.getFloat(getApplication().getString(R.string.balance_remaining_key), 0f));
+        balance.setValue(new BigDecimal(
+                sharedPreferences.getString(getApplication().getString(R.string.balance_remaining_key), "0")));
     }
 
     public LiveData<List<Expenditure>> getExpenditures() {
         return expenditures;
     }
 
-    public LiveData<Float> getBalance() {
+    public LiveData<BigDecimal> getBalance() {
         return balance;
     }
 
@@ -54,14 +58,14 @@ public class ExpenditureViewModel extends AndroidViewModel {
 
             expenditures.getValue().remove(expenditures.getValue().size() - 1);
 
-            balance.setValue(balance.getValue() + undoExpenditure.getValue());
+            balance.setValue(balance.getValue().add(undoExpenditure.getValue()));
             saveExpenditures();
         }
     }
 
     public void addExpenditure(Expenditure expenditure) {
         expenditures.getValue().add(expenditure);
-        balance.setValue(balance.getValue() - expenditure.getValue());
+        balance.setValue(balance.getValue().subtract(expenditure.getValue()));
 
         saveExpenditures();
     }
@@ -71,7 +75,9 @@ public class ExpenditureViewModel extends AndroidViewModel {
         sharedPreferences.edit()
                 .putString(getApplication().getString(R.string.expenditures_key),
                         gson.toJson(expenditures.getValue(), new TypeToken<List<Expenditure>>(){}.getType()))
-                .putFloat(getApplication().getString(R.string.balance_remaining_key), balance.getValue())
+                .putString(getApplication().getString(R.string.balance_remaining_key),
+                        // put the balance in as a big decimal rounded to two decimal places.
+                        String.format(Locale.CANADA, balance.getValue().setScale(2, RoundingMode.HALF_EVEN).toString()))
                 .apply();
     }
 
