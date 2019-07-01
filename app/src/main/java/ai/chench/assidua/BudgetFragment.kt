@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_budget.*
 import kotlinx.android.synthetic.main.fragment_budget.view.*
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.*
 
 class BudgetFragment : Fragment() {
@@ -21,9 +23,9 @@ class BudgetFragment : Fragment() {
     private val clickListener = View.OnClickListener { view ->
         when (view) {
             addExpenditureButton -> {
-                var expenditureValue: Float
+                var expenditureValue: BigDecimal
                 try {
-                    expenditureValue = expenditureCostEditText.text.toString().toFloat()
+                    expenditureValue = BigDecimal(expenditureCostEditText.text.toString()).setScale(2, RoundingMode.HALF_DOWN)
                 } catch (e: NumberFormatException) {
                     // check that the input value is valid
                     expenditureCostEditText.setError(getString(R.string.error_not_a_number))
@@ -54,13 +56,13 @@ class BudgetFragment : Fragment() {
         view.undoExpenditureButton.setOnClickListener(clickListener)
 
         viewModel.balance.observe(this, Observer { balance ->
-            if (balance > 0) {
+            if (balance > BigDecimal(0)) {
                 remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorPositive));
             } else {
                 remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorNegative));
             }
 
-            remainingMoneyTextView.setText(String.format(Locale.CANADA, "$%.2f", balance))
+            remainingMoneyTextView.text = (balance.setScale(2, RoundingMode.HALF_DOWN).toString())
             adapter.notifyDataSetChanged()
         })
 
