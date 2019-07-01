@@ -1,9 +1,14 @@
 package ai.chench.assidua;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -36,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private View.OnClickListener addClickListener = (View v) -> {
         float expenditureValue;
+        BigInteger i = new BigInteger("5");
 
         try {
             expenditureValue = Float.parseFloat(expenditureCostEditText.getText().toString());
@@ -64,48 +71,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_budget);
-        viewModel = ViewModelProviders.of(this).get(ExpenditureViewModel.class);
-
-        balanceTextView = findViewById(R.id.remainingMoneyTextView);
-
-        viewModel.getBalance().observe(this, (balance) -> {
-
-            // change the color of the textView based on whether the balance is positive or negative
-            if (Math.round(balance) == 0) {
-                balanceTextView.setTextColor(getResources().getColor(R.color.colorNeutral));
-            } else if (balance > 0) {
-                balanceTextView.setTextColor(getResources().getColor(R.color.colorPositive));
-            } else {
-                balanceTextView.setTextColor(getResources().getColor(R.color.colorNegative));
+        setContentView(R.layout.activity_main);
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            @NonNull
+            @Override
+            public Fragment getItem(int position) {
+                return new BudgetFragment();
             }
 
-            balanceTextView.setText(String.format(Locale.CANADA, "$%.2f", balance));
-
-            adapter.notifyDataSetChanged();
+            @Override
+            public int getCount() {
+                return 1;
+            }
         });
 
-        expenditureCostEditText = findViewById(R.id.expenditureCostEditText);
-        expenditureNameEditText = findViewById(R.id.expenditureNameEditText);
-
-        addExpenditureButton = findViewById(R.id.addExpenditureButton);
-        addExpenditureButton.setOnClickListener(addClickListener);
-
-        undoExpenditureButton = findViewById(R.id.undoExpenditureButton);
-        undoExpenditureButton.setOnClickListener(undoClickListener);
-
-        RecyclerView recyclerView = findViewById(R.id.expendituresRecyclerView);
-        adapter = new ExpenditureAdapter(viewModel.getExpenditures().getValue());
-
-        viewModel.getExpenditures().observe(this, expenditures -> {
-            adapter.notifyDataSetChanged();
-        });
-
-        recyclerView.setAdapter(adapter);
-
-        // reversed layout so most recent items show up at the top
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
-        layoutManager.setStackFromEnd(true);
-        recyclerView.setLayoutManager(layoutManager);
     }
 }

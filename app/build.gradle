@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "ai.chench.monthlyentertainmentbudget"
+        applicationId "ai.chench.assidua"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
@@ -40,7 +40,7 @@ dependencies {
     // For android viewModel
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
-    compile "androidx.core:core-ktx:+"
+    compile "androidx.core:core-ktx:1.0.2"
     compile "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     apply plugin: 'kotlin-android-extensions'
