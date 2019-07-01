@@ -39,6 +39,8 @@ class BudgetFragment : Fragment() {
                 viewModel.addExpenditure(Expenditure(name, expenditureValue, Date()))
                 expenditureNameEditText.setText("")
                 expenditureCostEditText.setText("")
+                // Scroll to the top to see the most recently added transaction
+                expendituresRecyclerView.smoothScrollToPosition(adapter.itemCount - 1)
             }
 
             undoExpenditureButton -> {
