@@ -4,7 +4,6 @@
 
     <string name="balance_remaining_key">BALANCE_REMAINING</string>
     <string name="expenditures_key">EXPENDITURES</string>
-    <string name="budgets_key">BUDGET</string>
 
     <string name="remaining_budget">Remaining Budget:</string>
     <string name="add_expenditure_cost">Cost</string>

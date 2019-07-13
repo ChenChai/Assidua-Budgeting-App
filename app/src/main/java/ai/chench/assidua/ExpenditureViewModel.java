@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class ExpenditureViewModel extends AndroidViewModel {
-    private MutableLiveData<List<Budget>> budgets = new MutableLiveData<>();
+
     private MutableLiveData<List<Expenditure>> expenditures = new MutableLiveData<>();
     private SharedPreferences sharedPreferences;
 
@@ -26,6 +26,7 @@ public class ExpenditureViewModel extends AndroidViewModel {
 
     public ExpenditureViewModel(Application application) {
         super(application);
+
         sharedPreferences = getApplication().getSharedPreferences(getApplication().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
         // Get the previous list of expenditures and the balance from shared preferences
@@ -80,11 +81,4 @@ public class ExpenditureViewModel extends AndroidViewModel {
                 .apply();
     }
 
-    private void saveBudgets() {
-        Gson gson = new Gson();
-        sharedPreferences.edit()
-                .putString(getApplication().getString(R.string.budgets_key),
-                        gson.toJson(budgets.getValue(), new TypeToken<List<Budget>>(){}.getType()))
-                .apply();
-    }
 }
