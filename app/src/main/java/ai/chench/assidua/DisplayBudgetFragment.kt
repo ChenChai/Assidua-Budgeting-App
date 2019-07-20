@@ -16,7 +16,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
 
-class BudgetFragment : Fragment() {
+class DisplayBudgetFragment : Fragment() {
 
     private lateinit var viewModel: ExpenditureViewModel
     private lateinit var adapter: ExpenditureAdapter
