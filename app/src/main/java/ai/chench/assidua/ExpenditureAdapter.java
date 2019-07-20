@@ -1,5 +1,6 @@
 package ai.chench.assidua;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class ExpenditureAdapter extends RecyclerView.Adapter<ExpenditureAdapter.ViewHolder> {
+    private static final String TAG = "ExpenditureAdapter";
+
     static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView expenditureName;
         public TextView expenditureValue;
@@ -52,6 +55,11 @@ public class ExpenditureAdapter extends RecyclerView.Adapter<ExpenditureAdapter.
         // use String.format here to set locale
         holder.expenditureValue.setText(String.format(Locale.CANADA, expenditure.getValue().setScale(2, RoundingMode.HALF_DOWN).toString()));
         holder.expenditureDate.setText(expenditure.getDate().toString());
+
+        holder.itemView.setOnClickListener((View v) -> {
+            Log.d(TAG, "Clicked expenditure with UUID: " + expenditures.get(position).getId().toString());
+        });
+
     }
 
     @Override

@@ -5,7 +5,7 @@ import androidx.room.*
 import java.math.BigDecimal
 import java.util.*
 
-@Database(entities = [Expenditure::class], version = 1)
+@Database(entities = [Expenditure::class, Budget::class], version = 1)
 @TypeConverters(Converters::class)
 public abstract class AssiduaRoomDatabase : RoomDatabase() {
     abstract fun expenditureDAO() : ExpenditureDAO
