@@ -3,6 +3,7 @@ package ai.chench.assidua
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -19,6 +20,9 @@ import java.math.RoundingMode
 import java.util.Locale
 
 class ExpenditureViewModel(application: Application) : AndroidViewModel(application) {
+    companion object {
+        private const val TAG = "ExpenditureViewModel"
+    }
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -32,6 +36,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     private val repository: BudgetRepository
 
     init {
+        Log.d(TAG, "Created a new ${TAG}")
         val dao = AssiduaRoomDatabase.getDatabase(application).expenditureDAO()
         repository = BudgetRepository(dao)
 

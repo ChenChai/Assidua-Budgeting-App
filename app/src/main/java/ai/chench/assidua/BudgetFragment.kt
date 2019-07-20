@@ -49,7 +49,12 @@ class BudgetFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_budget, container, false)
 
-        viewModel = ViewModelProviders.of(this).get(ExpenditureViewModel::class.java)
+        if (null != activity) {
+            // Attempt to share the ViewModel between the activity and all its fragments.
+            viewModel = ViewModelProviders.of(activity!!).get(ExpenditureViewModel::class.java)
+        } else {
+            viewModel = ViewModelProviders.of(this).get(ExpenditureViewModel::class.java)
+        }
 
         view.addExpenditureButton.setOnClickListener(clickListener)
         view.undoExpenditureButton.setOnClickListener(clickListener)
