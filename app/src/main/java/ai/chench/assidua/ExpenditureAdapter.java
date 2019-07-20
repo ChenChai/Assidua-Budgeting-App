@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,10 +27,14 @@ public class ExpenditureAdapter extends RecyclerView.Adapter<ExpenditureAdapter.
         }
     }
 
-    private List<Expenditure> expenditures;
+    private List<Expenditure> expenditures = new ArrayList<>();
 
-    public ExpenditureAdapter(List<Expenditure> expenditures) {
+    public ExpenditureAdapter() {
+    }
+
+    public void setExpenditures(List<Expenditure> expenditures) {
         this.expenditures = expenditures;
+        notifyDataSetChanged();
     }
 
     @NonNull

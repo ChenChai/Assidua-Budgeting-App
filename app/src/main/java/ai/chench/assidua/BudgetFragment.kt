@@ -32,15 +32,12 @@ class BudgetFragment : Fragment() {
                     return@OnClickListener
                 }
 
-
                 var name = expenditureNameEditText.text.toString().trim()
                 name = if (name == "") getString(R.string.untitled_expenditure) else name
 
                 viewModel.addExpenditure(Expenditure(name, expenditureValue, Date()))
                 expenditureNameEditText.setText("")
                 expenditureCostEditText.setText("")
-                // Scroll to the top to see the most recently added transaction
-                expendituresRecyclerView.smoothScrollToPosition(adapter.itemCount - 1)
             }
 
             undoExpenditureButton -> {
@@ -69,10 +66,16 @@ class BudgetFragment : Fragment() {
         })
 
         viewModel.expenditures.observe(this, Observer {
-            adapter.notifyDataSetChanged()
+            adapter.setExpenditures(it)
+
+            // Scroll to the top to see the most recently added transaction
+            expendituresRecyclerView.smoothScrollToPosition(
+                    if (adapter.itemCount - 1 < 0) 0
+                    else adapter.itemCount - 1
+            )
         })
 
-        adapter = ExpenditureAdapter(viewModel.expenditures.value)
+        adapter = ExpenditureAdapter()
 
         val layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
         layoutManager.stackFromEnd = true
