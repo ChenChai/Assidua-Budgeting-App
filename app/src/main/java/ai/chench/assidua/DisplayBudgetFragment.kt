@@ -40,6 +40,7 @@ class DisplayBudgetFragment : Fragment() {
 
                 var expenditureValue: BigDecimal
                 try {
+                    // Round input to two decimal places
                     expenditureValue = BigDecimal(expenditureCostEditText.text.toString()).setScale(2, RoundingMode.HALF_DOWN)
                 } catch (e: NumberFormatException) {
                     // check that the input value is valid
@@ -83,21 +84,16 @@ class DisplayBudgetFragment : Fragment() {
 
         budget.observe(this, Observer {
             view.remainingMoneyTextView.setText(it.balance.toPlainString())
+
+            if (it.balance >= BigDecimal(0)) {
+                remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorPositive))
+            } else {
+                remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorNegative))
+            }
         })
 
         view.addExpenditureButton.setOnClickListener(clickListener)
         view.undoExpenditureButton.setOnClickListener(clickListener)
-
-//        viewModel.balance.observe(this, Observer { balance ->
-//            if (balance > BigDecimal(0)) {
-//                remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorPositive));
-//            } else {
-//                remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorNegative));
-//            }
-//
-//            remainingMoneyTextView.text = String.format(Locale.CANADA, balance.setScale(2, RoundingMode.HALF_DOWN).toString())
-//            adapter.notifyDataSetChanged()
-//        })
 
         viewModel.getExpenditures(budgetUUID).observe(this, Observer {
             adapter.setExpenditures(it)
