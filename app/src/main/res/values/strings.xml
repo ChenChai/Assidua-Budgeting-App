@@ -7,9 +7,6 @@
     <string name="expenditures_key">EXPENDITURES</string>
     <string name="budgets_key">BUDGET</string>
 
-    <!-- Argument to pass to DisplayBudgetFragment to determine which budget it should display -->
-    <string name="budget_uuid_key">ARGUMENT_BUDGET_UUID</string>
-
     <string name="remaining_budget">Remaining Budget:</string>
     <string name="add_expenditure_cost">Cost</string>
     <string name="add_expenditure_name">Name (Optional)</string>

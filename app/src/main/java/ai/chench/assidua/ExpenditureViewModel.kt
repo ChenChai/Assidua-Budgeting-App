@@ -59,10 +59,14 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
 //        }
 //    }
 
-    fun addExpenditure(expenditure: Expenditure) {
+    fun addExpenditure(expenditure: Expenditure, budget: Budget) {
         // TODO update budget balance
         uiScope.launch(Dispatchers.IO) {
             repository.insertExpenditure(expenditure)
+
+            budget.balance = budget.balance.add(expenditure.value)
+
+            repository.updateBudget(budget)
         }
     }
 }

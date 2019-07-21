@@ -13,7 +13,6 @@ class BudgetRepository (private val expenditureDAO: ExpenditureDAO) {
         expenditureDAO.insertExpenditure(expenditure)
     }
 
-    @WorkerThread
     suspend fun deleteExpenditure(expenditure: Expenditure) {
         expenditureDAO.deleteExpenditure(expenditure.id)
     }
@@ -23,12 +22,18 @@ class BudgetRepository (private val expenditureDAO: ExpenditureDAO) {
         expenditureDAO.insertBudget(budget)
     }
 
-    @WorkerThread
-    suspend fun deleteBudget(budget: Budget) {
+    fun updateBudget(budget:Budget) {
+        expenditureDAO.updateBudget(
+                budget.id,
+                budget.name,
+                budget.balance
+        )
+    }
+
+    fun deleteBudget(budget: Budget) {
         expenditureDAO.deleteBudget(budget.id)
     }
 
-    @WorkerThread
     fun getExpendituresFromBudget(budgetId: UUID) : LiveData<List<Expenditure>> {
         return expenditureDAO.getExpendituresFromBudget(budgetId)
     }

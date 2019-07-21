@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 /**
@@ -42,10 +44,11 @@ public class BudgetPagerAdapter extends FragmentStatePagerAdapter {
             Log.d(TAG, "setting position " + position + " to a display budget fragment");
 
             DisplayBudgetFragment fragment = new DisplayBudgetFragment();
+
             Bundle args = new Bundle();
             args.putString(
-                    DisplayBudgetFragment.ARGUMENT_BUDGET_UUID,
-                    budgets.get(position).getId().toString());
+                    DisplayBudgetFragment.ARGUMENT_BUDGET,
+                    new Gson().toJson(budgets.get(position)));
 
             fragment.setArguments(args);
             return fragment;

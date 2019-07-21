@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_display_budget.*
 import kotlinx.android.synthetic.main.fragment_display_budget.view.*
 import java.math.BigDecimal
@@ -20,12 +21,12 @@ class DisplayBudgetFragment : Fragment() {
 
     companion object {
         // Used for passing in the budget UUID via arguments to this fragment
-        public const val ARGUMENT_BUDGET_UUID = "ARGUMENT_BUDGET_UUID"
+        public const val ARGUMENT_BUDGET = "ARGUMENT_BUDGET"
     }
 
     private lateinit var viewModel: ExpenditureViewModel
     private lateinit var adapter: ExpenditureAdapter
-    private lateinit var budgetId: UUID // Id of the budget this fragment is displaying
+    private lateinit var budget: Budget // Id of the budget this fragment is displaying
 
     private val clickListener = View.OnClickListener { view ->
         when (view) {
@@ -43,7 +44,8 @@ class DisplayBudgetFragment : Fragment() {
                 name = if (name == "") getString(R.string.untitled_expenditure) else name
 
                 viewModel.addExpenditure(
-                        Expenditure(name, expenditureValue, Date(), budgetId))
+                        Expenditure(name, expenditureValue, Date(), budget.id)
+                        , budget)
                 expenditureNameEditText.setText("")
                 expenditureCostEditText.setText("")
             }
@@ -57,9 +59,14 @@ class DisplayBudgetFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        budgetId = UUID.fromString(arguments!!.getString(this.getString(R.string.budget_uuid_key)))
+
+        // TODO pass a UUID and grab the LiveData<Budget> associated.
+        val budgetJSON = arguments!!.getString(ARGUMENT_BUDGET)
+        budget = Gson().fromJson(budgetJSON, Budget::class.java)
 
         val view = inflater.inflate(R.layout.fragment_display_budget, container, false)
+
+        view.remainingMoneyTextView.setText(budget.balance.toPlainString())
 
         if (null != activity) {
             // Attempt to share the ViewModel between the activity and all its fragments.
@@ -82,7 +89,7 @@ class DisplayBudgetFragment : Fragment() {
 //            adapter.notifyDataSetChanged()
 //        })
 
-        viewModel.getExpenditures(budgetId).observe(this, Observer {
+        viewModel.getExpenditures(budget.id).observe(this, Observer {
             adapter.setExpenditures(it)
 
             // Scroll to the top to see the most recently added transaction
