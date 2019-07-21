@@ -28,8 +28,6 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     val budgets: LiveData<List<Budget>>
-    val expenditures: LiveData<List<Expenditure>>
-
     private val repository: BudgetRepository
 
     init {
@@ -38,9 +36,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
         repository = BudgetRepository(dao)
 
         budgets = repository.allBudgets
-        expenditures = repository.allExpendiures
     }
-
 
     fun addBudget(budget: Budget) {
         uiScope.launch(Dispatchers.IO) {
@@ -48,17 +44,20 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-
-    fun undoLastExpenditure() {
-        // TODO update budget balance
-        if (expenditures.value!!.isNotEmpty()) {
-            // get most recent expenditure
-            val expenditure = expenditures.value!![expenditures.value!!.size - 1]
-            uiScope.launch(Dispatchers.IO) {
-                repository.deleteExpenditure(expenditure)
-            }
-        }
+    fun getExpenditures(budgetId: UUID) : LiveData<List<Expenditure>> {
+        return repository.getExpendituresFromBudget(budgetId)
     }
+
+//    fun undoLastExpenditure() {
+//        // TODO update budget balance
+//        if (expenditures.value!!.isNotEmpty()) {
+//            // get most recent expenditure
+//            val expenditure = expenditures.value!![expenditures.value!!.size - 1]
+//            uiScope.launch(Dispatchers.IO) {
+//                repository.deleteExpenditure(expenditure)
+//            }
+//        }
+//    }
 
     fun addExpenditure(expenditure: Expenditure) {
         // TODO update budget balance

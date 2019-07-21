@@ -14,6 +14,9 @@ interface ExpenditureDAO {
     @Query("SELECT * FROM expenditure_table ORDER BY date ASC;")
     fun getAllExpenditures(): LiveData<List<Expenditure>>
 
+    @Query("SELECT * FROM expenditure_table WHERE budget_id=:budgetId ORDER BY date ASC;")
+    fun getExpendituresFromBudget(budgetId: UUID) : LiveData<List<Expenditure>>
+
     @Insert
     suspend fun insertExpenditure(expenditure: Expenditure)
 

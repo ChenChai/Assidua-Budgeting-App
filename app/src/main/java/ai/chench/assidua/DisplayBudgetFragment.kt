@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,10 +19,9 @@ import java.util.*
 class DisplayBudgetFragment : Fragment() {
 
     companion object {
-        // Used
+        // Used for passing in the budget UUID via arguments to this fragment
         public const val ARGUMENT_BUDGET_UUID = "ARGUMENT_BUDGET_UUID"
     }
-
 
     private lateinit var viewModel: ExpenditureViewModel
     private lateinit var adapter: ExpenditureAdapter
@@ -49,7 +49,9 @@ class DisplayBudgetFragment : Fragment() {
             }
 
             undoExpenditureButton -> {
-                viewModel.undoLastExpenditure()
+                // TODO re-implement undoing expenditures
+                Toast.makeText(context, "Feature coming soon!", Toast.LENGTH_LONG).show()
+                //viewModel.undoLastExpenditure()
             }
         }
     }
@@ -80,7 +82,7 @@ class DisplayBudgetFragment : Fragment() {
 //            adapter.notifyDataSetChanged()
 //        })
 
-        viewModel.expenditures.observe(this, Observer {
+        viewModel.getExpenditures(budgetId).observe(this, Observer {
             adapter.setExpenditures(it)
 
             // Scroll to the top to see the most recently added transaction
