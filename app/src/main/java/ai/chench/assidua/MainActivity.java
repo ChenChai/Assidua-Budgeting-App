@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,7 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
     private static final String TAG = "MainActivity";
 
     @Override
@@ -31,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
         BudgetPagerAdapter adapter = new BudgetPagerAdapter(
                 getSupportFragmentManager(),
-                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+                //FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+                // causes a crash when replacing fragments due to lifecycle issues
+                FragmentStatePagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT,
                 new ArrayList<>());
 
         viewModel.getBudgets().observe(this, (List<Budget> budgets) -> {

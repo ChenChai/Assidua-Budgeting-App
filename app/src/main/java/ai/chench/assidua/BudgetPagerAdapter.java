@@ -69,4 +69,18 @@ public class BudgetPagerAdapter extends FragmentStatePagerAdapter {
             return budgets.get(position).getName();
         }
     }
+
+    @Override
+    // Called when ViewPager checking to see if it needs to destroy and recreate a fragment
+    public int getItemPosition(@NonNull Object object) {
+        // If it's a CreateBudgetFragment, it's possible the user just created a new Budget
+        // and this fragment needs to be replaced with a DisplayBudgetFragment, so return
+        // POSITION_NONE to force recreate.
+        if (object instanceof CreateBudgetFragment) {
+            return POSITION_NONE;
+        } else {
+            // Otherwise, use the parent method
+            return super.getItemPosition(object);
+        }
+    }
 }
