@@ -2,7 +2,6 @@ package ai.chench.assidua
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -10,8 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_budget.*
-import kotlinx.android.synthetic.main.fragment_budget.view.*
+import kotlinx.android.synthetic.main.fragment_display_budget.*
+import kotlinx.android.synthetic.main.fragment_display_budget.view.*
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -48,7 +47,7 @@ class DisplayBudgetFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_budget, container, false)
+        val view = inflater.inflate(R.layout.fragment_display_budget, container, false)
 
         if (null != activity) {
             // Attempt to share the ViewModel between the activity and all its fragments.
