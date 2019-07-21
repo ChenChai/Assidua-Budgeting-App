@@ -5,14 +5,25 @@ import androidx.lifecycle.LiveData
 
 class BudgetRepository (private val expenditureDAO: ExpenditureDAO) {
     val allExpendiures: LiveData<List<Expenditure>> = expenditureDAO.getAllExpenditures()
+    val allBudgets: LiveData<List<Budget>> = expenditureDAO.getAllBudgets()
 
     @WorkerThread
-    suspend fun insert(expenditure: Expenditure) {
-        expenditureDAO.insert(expenditure)
+    suspend fun insertExpenditure(expenditure: Expenditure) {
+        expenditureDAO.insertExpenditure(expenditure)
     }
 
     @WorkerThread
-    suspend fun delete(expenditure: Expenditure) {
+    suspend fun deleteExpenditure(expenditure: Expenditure) {
         expenditureDAO.deleteExpenditure(expenditure.id)
+    }
+
+    @WorkerThread
+    suspend fun insertBudget(budget: Budget) {
+        expenditureDAO.insertBudget(budget)
+    }
+
+    @WorkerThread
+    suspend fun deleteBudget(budget: Budget) {
+        expenditureDAO.deleteBudget(budget.id)
     }
 }

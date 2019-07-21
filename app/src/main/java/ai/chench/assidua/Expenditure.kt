@@ -10,7 +10,8 @@ import java.util.*
 data class Expenditure(
         @ColumnInfo(name = "name") var name: String,
         @ColumnInfo(name = "value") var value: BigDecimal,
-        @ColumnInfo(name = "date") var date: Date) {
+        @ColumnInfo(name = "date") var date: Date,
+        @ColumnInfo(name = "budget_id") var budgetId: UUID) {
 
         @PrimaryKey
 

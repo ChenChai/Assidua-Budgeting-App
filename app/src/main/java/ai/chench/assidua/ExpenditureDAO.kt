@@ -15,7 +15,7 @@ interface ExpenditureDAO {
     fun getAllExpenditures(): LiveData<List<Expenditure>>
 
     @Insert
-    suspend fun insert(expenditure: Expenditure)
+    suspend fun insertExpenditure(expenditure: Expenditure)
 
     @Query("DELETE FROM expenditure_table WHERE id=:id")
     fun deleteExpenditure(id: UUID)
@@ -24,7 +24,7 @@ interface ExpenditureDAO {
     fun deleteAllExpenditures()
 
     @Insert
-    suspend fun insert(budget: Budget)
+    suspend fun insertBudget(budget: Budget)
 
     // NOTE: Does not delete the expenditures associated with the budget!
     @Query("DELETE FROM budget_table WHERE id=:id")

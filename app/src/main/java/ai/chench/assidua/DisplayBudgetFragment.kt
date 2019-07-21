@@ -17,8 +17,15 @@ import java.util.*
 
 class DisplayBudgetFragment : Fragment() {
 
+    companion object {
+        // Used
+        public const val ARGUMENT_BUDGET_UUID = "ARGUMENT_BUDGET_UUID"
+    }
+
+
     private lateinit var viewModel: ExpenditureViewModel
     private lateinit var adapter: ExpenditureAdapter
+    private lateinit var budgetId: UUID // Id of the budget this fragment is displaying
 
     private val clickListener = View.OnClickListener { view ->
         when (view) {
@@ -35,7 +42,8 @@ class DisplayBudgetFragment : Fragment() {
                 var name = expenditureNameEditText.text.toString().trim()
                 name = if (name == "") getString(R.string.untitled_expenditure) else name
 
-                viewModel.addExpenditure(Expenditure(name, expenditureValue, Date()))
+                viewModel.addExpenditure(
+                        Expenditure(name, expenditureValue, Date(), budgetId))
                 expenditureNameEditText.setText("")
                 expenditureCostEditText.setText("")
             }
@@ -47,6 +55,8 @@ class DisplayBudgetFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        budgetId = UUID.fromString(arguments!!.getString(this.getString(R.string.budget_uuid_key)))
+
         val view = inflater.inflate(R.layout.fragment_display_budget, container, false)
 
         if (null != activity) {
@@ -59,16 +69,16 @@ class DisplayBudgetFragment : Fragment() {
         view.addExpenditureButton.setOnClickListener(clickListener)
         view.undoExpenditureButton.setOnClickListener(clickListener)
 
-        viewModel.balance.observe(this, Observer { balance ->
-            if (balance > BigDecimal(0)) {
-                remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorPositive));
-            } else {
-                remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorNegative));
-            }
-
-            remainingMoneyTextView.text = String.format(Locale.CANADA, balance.setScale(2, RoundingMode.HALF_DOWN).toString())
-            adapter.notifyDataSetChanged()
-        })
+//        viewModel.balance.observe(this, Observer { balance ->
+//            if (balance > BigDecimal(0)) {
+//                remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorPositive));
+//            } else {
+//                remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorNegative));
+//            }
+//
+//            remainingMoneyTextView.text = String.format(Locale.CANADA, balance.setScale(2, RoundingMode.HALF_DOWN).toString())
+//            adapter.notifyDataSetChanged()
+//        })
 
         viewModel.expenditures.observe(this, Observer {
             adapter.setExpenditures(it)

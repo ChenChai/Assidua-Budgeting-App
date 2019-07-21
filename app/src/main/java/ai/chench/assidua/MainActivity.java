@@ -5,12 +5,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -22,30 +27,20 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager viewPager = findViewById(R.id.viewPager);
-        ViewModelProviders.of(this).get(ExpenditureViewModel.class);
+        ExpenditureViewModel viewModel = ViewModelProviders.of(this).get(ExpenditureViewModel.class);
 
-        viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                if (position == 5) {
-                    return new CreateBudgetFragment();
-                }
-                return new DisplayBudgetFragment();
-            }
+        BudgetPagerAdapter adapter = new BudgetPagerAdapter(
+                getSupportFragmentManager(),
+                FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
+                new ArrayList<>());
 
-            @Override
-            public int getCount() {
-                return 6;
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return "My Budget!";
-            }
+        viewModel.getBudgets().observe(this, (List<Budget> budgets) -> {
+            Log.d(TAG, "new budget size: " + budgets.size() + " Notifying adapter!");
+            adapter.setBudgets(budgets);
+            adapter.notifyDataSetChanged();
         });
 
+        viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
 }
