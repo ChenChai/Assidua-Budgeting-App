@@ -48,6 +48,10 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
         return repository.getExpendituresFromBudget(budgetId)
     }
 
+    fun getBudget(budgetId: UUID): LiveData<Budget> {
+        return repository.getBudgetFromId(budgetId)
+    }
+
 //    fun undoLastExpenditure() {
 //        // TODO update budget balance
 //        if (expenditures.value!!.isNotEmpty()) {
@@ -59,13 +63,14 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
 //        }
 //    }
 
+    /**
+     * @param budget The budget for which to add the expenditure to
+     */
     fun addExpenditure(expenditure: Expenditure, budget: Budget) {
         // TODO update budget balance
         uiScope.launch(Dispatchers.IO) {
             repository.insertExpenditure(expenditure)
-
             budget.balance = budget.balance.add(expenditure.value)
-
             repository.updateBudget(budget)
         }
     }

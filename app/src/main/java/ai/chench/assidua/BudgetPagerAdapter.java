@@ -47,8 +47,8 @@ public class BudgetPagerAdapter extends FragmentStatePagerAdapter {
 
             Bundle args = new Bundle();
             args.putString(
-                    DisplayBudgetFragment.ARGUMENT_BUDGET,
-                    new Gson().toJson(budgets.get(position)));
+                    DisplayBudgetFragment.ARGUMENT_BUDGET_UUID,
+                    budgets.get(position).getId().toString());
 
             fragment.setArguments(args);
             return fragment;

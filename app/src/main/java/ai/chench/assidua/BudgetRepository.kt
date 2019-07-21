@@ -2,6 +2,7 @@ package ai.chench.assidua
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import java.math.BigDecimal
 import java.util.*
 
 class BudgetRepository (private val expenditureDAO: ExpenditureDAO) {
@@ -32,6 +33,10 @@ class BudgetRepository (private val expenditureDAO: ExpenditureDAO) {
 
     fun deleteBudget(budget: Budget) {
         expenditureDAO.deleteBudget(budget.id)
+    }
+
+    fun getBudgetFromId(id: UUID): LiveData<Budget> {
+        return expenditureDAO.getBudgetFromId(id)
     }
 
     fun getExpendituresFromBudget(budgetId: UUID) : LiveData<List<Expenditure>> {

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,16 +22,22 @@ class DisplayBudgetFragment : Fragment() {
 
     companion object {
         // Used for passing in the budget UUID via arguments to this fragment
-        public const val ARGUMENT_BUDGET = "ARGUMENT_BUDGET"
+        public const val ARGUMENT_BUDGET_UUID = "ARGUMENT_BUDGET_UUID"
     }
 
     private lateinit var viewModel: ExpenditureViewModel
     private lateinit var adapter: ExpenditureAdapter
-    private lateinit var budget: Budget // Id of the budget this fragment is displaying
+    private lateinit var budget: LiveData<Budget> // Id of the budget this fragment is displaying
+    private lateinit var budgetUUID: UUID
 
     private val clickListener = View.OnClickListener { view ->
         when (view) {
             addExpenditureButton -> {
+                // We haven't found the budget yet from the database.
+                // This means that everything's going really slowly or
+                // more likely, something's wrong.
+                if (budget.value == null) { return@OnClickListener }
+
                 var expenditureValue: BigDecimal
                 try {
                     expenditureValue = BigDecimal(expenditureCostEditText.text.toString()).setScale(2, RoundingMode.HALF_DOWN)
@@ -44,8 +51,8 @@ class DisplayBudgetFragment : Fragment() {
                 name = if (name == "") getString(R.string.untitled_expenditure) else name
 
                 viewModel.addExpenditure(
-                        Expenditure(name, expenditureValue, Date(), budget.id)
-                        , budget)
+                        Expenditure(name, expenditureValue, Date(), budgetUUID),
+                        budget.value!!)
                 expenditureNameEditText.setText("")
                 expenditureCostEditText.setText("")
             }
@@ -60,13 +67,8 @@ class DisplayBudgetFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        // TODO pass a UUID and grab the LiveData<Budget> associated.
-        val budgetJSON = arguments!!.getString(ARGUMENT_BUDGET)
-        budget = Gson().fromJson(budgetJSON, Budget::class.java)
 
         val view = inflater.inflate(R.layout.fragment_display_budget, container, false)
-
-        view.remainingMoneyTextView.setText(budget.balance.toPlainString())
 
         if (null != activity) {
             // Attempt to share the ViewModel between the activity and all its fragments.
@@ -74,6 +76,14 @@ class DisplayBudgetFragment : Fragment() {
         } else {
             viewModel = ViewModelProviders.of(this).get(ExpenditureViewModel::class.java)
         }
+
+
+        budgetUUID = UUID.fromString(arguments!!.getString(ARGUMENT_BUDGET_UUID))
+        budget = viewModel.getBudget(budgetUUID)
+
+        budget.observe(this, Observer {
+            view.remainingMoneyTextView.setText(it.balance.toPlainString())
+        })
 
         view.addExpenditureButton.setOnClickListener(clickListener)
         view.undoExpenditureButton.setOnClickListener(clickListener)
@@ -89,7 +99,7 @@ class DisplayBudgetFragment : Fragment() {
 //            adapter.notifyDataSetChanged()
 //        })
 
-        viewModel.getExpenditures(budget.id).observe(this, Observer {
+        viewModel.getExpenditures(budgetUUID).observe(this, Observer {
             adapter.setExpenditures(it)
 
             // Scroll to the top to see the most recently added transaction

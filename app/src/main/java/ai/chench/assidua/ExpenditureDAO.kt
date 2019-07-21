@@ -45,6 +45,9 @@ interface ExpenditureDAO {
     @Query("DELETE FROM budget_table WHERE id=:id")
     fun deleteBudget(id: UUID)
 
+    @Query("SELECT * FROM budget_table WHERE id=:id")
+    fun getBudgetFromId(id: UUID): LiveData<Budget>
+
     @Query("SELECT * FROM budget_table")
     fun getAllBudgets(): LiveData<List<Budget>>
 
