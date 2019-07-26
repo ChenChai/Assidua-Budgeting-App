@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -12,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_display_budget.*
 import kotlinx.android.synthetic.main.fragment_display_budget.view.*
 import java.math.BigDecimal
@@ -50,7 +48,7 @@ class DisplayBudgetFragment : Fragment() {
                 }
 
                 // Check to see whether entered expenditure was an expense or income.
-                if (switch1.isChecked) {
+                if (incomeSwitch.isChecked) {
                     // If switch is checked, it's income. No modifications needed
                 } else {
                     // Otherwise, it's an expense, so multiply by -1.
@@ -122,10 +120,10 @@ class DisplayBudgetFragment : Fragment() {
         view.expendituresRecyclerView.adapter = adapter
         view.expendituresRecyclerView.layoutManager = layoutManager
 
-        view.switch1.setOnCheckedChangeListener { _, checked ->
-            view.switchText.text = if (checked) "Income" else "Expense"
+        view.incomeSwitch.setOnCheckedChangeListener { _, checked ->
+            view.switchTextView.text = if (checked) "Income" else "Expense"
         }
-        view.switchText.text = "Expense"
+        view.switchTextView.text = "Expense"
 
         return view
     }

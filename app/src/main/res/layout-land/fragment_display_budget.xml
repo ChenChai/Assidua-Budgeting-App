@@ -93,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@+id/expenditureCostEditText" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch1"
+        android:id="@+id/incomeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -104,12 +104,12 @@
         app:layout_constraintStart_toEndOf="@+id/remainingMoneyTextView" />
 
     <TextView
-        android:id="@+id/switchText"
+        android:id="@+id/switchTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginLeft="28dp"
         android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/remainingMoneyTextView"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+        app:layout_constraintTop_toBottomOf="@+id/incomeSwitch" />
 </androidx.constraintlayout.widget.ConstraintLayout>
