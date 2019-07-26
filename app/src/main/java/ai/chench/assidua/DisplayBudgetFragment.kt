@@ -49,6 +49,14 @@ class DisplayBudgetFragment : Fragment() {
                     return@OnClickListener
                 }
 
+                // Check to see whether entered expenditure was an expense or income.
+                if (switch1.isChecked) {
+                    // If switch is checked, it's income. No modifications needed
+                } else {
+                    // Otherwise, it's an expense, so multiply by -1.
+                    expenditureValue = expenditureValue.negate()
+                }
+
                 var name = expenditureNameEditText.text.toString().trim()
                 name = if (name == "") getString(R.string.untitled_expenditure) else name
 
@@ -84,7 +92,7 @@ class DisplayBudgetFragment : Fragment() {
         budget = viewModel.getBudget(budgetUUID)
 
         budget.observe(this, Observer {
-            view.remainingMoneyTextView.setText(it.balance.toPlainString())
+            view.remainingMoneyTextView.setText(it.balance.setScale(2).toPlainString()) // Set the number to always have 2 decimal places
 
             if (it.balance >= BigDecimal(0)) {
                 remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorPositive))
