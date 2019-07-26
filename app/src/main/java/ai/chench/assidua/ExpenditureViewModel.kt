@@ -67,7 +67,6 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
      * @param budget The budget for which to add the expenditure to
      */
     fun addExpenditure(expenditure: Expenditure, budget: Budget) {
-        // TODO update budget balance
         uiScope.launch(Dispatchers.IO) {
             repository.insertExpenditure(expenditure)
             budget.balance = budget.balance.add(expenditure.value)

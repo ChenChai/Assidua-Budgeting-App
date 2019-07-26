@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SwitchTheme" parent="AppTheme">
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorSwitchThumbNormal">@color/colorPrimary</item>
+        <item name="android:colorForeground">@color/colorPrimaryDark</item>
+    </style>
 </resources>
