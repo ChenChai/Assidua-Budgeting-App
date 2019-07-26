@@ -114,7 +114,6 @@ class DisplayBudgetFragment : Fragment() {
         view.expendituresRecyclerView.adapter = adapter
         view.expendituresRecyclerView.layoutManager = layoutManager
 
-
         view.switch1.setOnCheckedChangeListener { _, checked ->
             view.switchText.text = if (checked) "Income" else "Expense"
         }
