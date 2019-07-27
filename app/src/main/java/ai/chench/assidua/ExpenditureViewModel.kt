@@ -52,16 +52,20 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
         return repository.getBudgetFromId(budgetId)
     }
 
-//    fun undoLastExpenditure() {
-//        // TODO update budget balance
-//        if (expenditures.value!!.isNotEmpty()) {
-//            // get most recent expenditure
-//            val expenditure = expenditures.value!![expenditures.value!!.size - 1]
-//            uiScope.launch(Dispatchers.IO) {
-//                repository.deleteExpenditure(expenditure)
-//            }
-//        }
-//    }
+    /**
+     * @param expenditure The expenditure to delete
+     * @param budget The budget from which to delete the expenditure.
+     */
+    fun deleteExpenditure(expenditure: Expenditure, budget: Budget) {
+        uiScope.launch(Dispatchers.IO) {
+            // Synchronize so that we don't mess up the budget value
+            synchronized(getApplication()) {
+                repository.deleteExpenditure(expenditure) // delete expenditure from database
+                budget.balance = budget.balance.subtract(expenditure.value) // update budget value
+                repository.updateBudget(budget) // update budget value in database
+            }
+        }
+    }
 
     /**
      * @param budget The budget for which to add the expenditure to

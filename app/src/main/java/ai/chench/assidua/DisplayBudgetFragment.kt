@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -28,6 +27,7 @@ class DisplayBudgetFragment : Fragment() {
     private lateinit var adapter: ExpenditureAdapter
     private lateinit var budget: LiveData<Budget> // Id of the budget this fragment is displaying
     private lateinit var budgetUUID: UUID
+    private var expenditures: MutableList<Expenditure> = ArrayList<Expenditure>()// A most-recent list of expenditures
 
     private val clickListener = View.OnClickListener { view ->
         when (view) {
@@ -66,9 +66,10 @@ class DisplayBudgetFragment : Fragment() {
             }
 
             undoExpenditureButton -> {
-                // TODO re-implement undoing expenditures
-                Toast.makeText(context, "Feature coming soon!", Toast.LENGTH_LONG).show()
-                //viewModel.undoLastExpenditure()
+                if (expenditures.isNotEmpty() && budget.value != null) {
+                    viewModel.deleteExpenditure(expenditures.last(), budget.value!!)
+                    expenditures.removeAt(expenditures.size - 1) // remove last element from local values
+                }
             }
         }
     }
@@ -104,6 +105,9 @@ class DisplayBudgetFragment : Fragment() {
 
         viewModel.getExpenditures(budgetUUID).observe(this, Observer {
             adapter.setExpenditures(it)
+
+            // update fragment reference to list of expenditures
+            expenditures = it.toMutableList()
 
             // Scroll to the top to see the most recently added transaction
             expendituresRecyclerView.smoothScrollToPosition(

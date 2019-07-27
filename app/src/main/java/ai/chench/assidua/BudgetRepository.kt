@@ -14,7 +14,7 @@ class BudgetRepository (private val expenditureDAO: ExpenditureDAO) {
         expenditureDAO.insertExpenditure(expenditure)
     }
 
-    suspend fun deleteExpenditure(expenditure: Expenditure) {
+    fun deleteExpenditure(expenditure: Expenditure) {
         expenditureDAO.deleteExpenditure(expenditure.id)
     }
 

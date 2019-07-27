@@ -2,10 +2,7 @@ package ai.chench.assidua
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.TypeConverter
+import androidx.room.*
 import java.math.BigDecimal
 import java.util.*
 
@@ -50,8 +47,5 @@ interface ExpenditureDAO {
 
     @Query("SELECT * FROM budget_table")
     fun getAllBudgets(): LiveData<List<Budget>>
-
-    //@Query("SELECT * FROM expenditure_table WHERE budget_id=:budgetId")
-    //fun getBudgetExpenditures(budgetId: UUID): LiveData<List<Expenditure>>
 }
 
