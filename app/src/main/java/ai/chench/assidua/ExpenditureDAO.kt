@@ -24,6 +24,10 @@ interface ExpenditureDAO {
     @Query("DELETE FROM expenditure_table WHERE budget_id=:budgetId")
     fun deleteExpendituresFromBudget(budgetId: UUID)
 
+    // Deletes most recent budget added to the table
+    @Query("DELETE FROM expenditure_table WHERE budget_id=:budgetId and date = (SELECT max(date) FROM expenditure_table);")
+    fun deleteLastExpenditureFromBudget(budgetId: UUID)
+
     @Query("DELETE FROM expenditure_table")
     fun deleteAllExpenditures()
 

@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_display_budget.view.*
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
+import kotlin.concurrent.thread
 
 class DisplayBudgetFragment : Fragment() {
 
@@ -27,7 +28,11 @@ class DisplayBudgetFragment : Fragment() {
     private lateinit var adapter: ExpenditureAdapter
     private lateinit var budget: LiveData<Budget> // Id of the budget this fragment is displaying
     private lateinit var budgetUUID: UUID
-    private var expenditures: MutableList<Expenditure> = ArrayList<Expenditure>()// A most-recent list of expenditures
+
+    private var balance = BigDecimal(0)
+    private var expenditures: MutableList<Expenditure> = ArrayList()// A most-recent list of expenditures
+
+
 
     private val clickListener = View.OnClickListener { view ->
         when (view) {
@@ -67,8 +72,7 @@ class DisplayBudgetFragment : Fragment() {
 
             undoExpenditureButton -> {
                 if (expenditures.isNotEmpty() && budget.value != null) {
-                    viewModel.deleteExpenditure(expenditures.last(), budget.value!!)
-                    expenditures.removeAt(expenditures.size - 1) // remove last element from local values
+                    viewModel.deleteLastExpenditure(budget.value!!)
                 }
             }
         }
@@ -91,13 +95,8 @@ class DisplayBudgetFragment : Fragment() {
         budget = viewModel.getBudget(budgetUUID)
 
         budget.observe(this, Observer {
-            view.remainingMoneyTextView.setText(it.balance.setScale(2).toPlainString()) // Set the number to always have 2 decimal places
-
-            if (it.balance >= BigDecimal(0)) {
-                remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorPositive))
-            } else {
-                remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorNegative))
-            }
+            // TODO figure out if the budget should actually hold info on
+            //  balance, or if we should just recalculate it each time
         })
 
         view.addExpenditureButton.setOnClickListener(clickListener)
@@ -114,6 +113,24 @@ class DisplayBudgetFragment : Fragment() {
                     if (adapter.itemCount - 1 < 0) 0
                     else adapter.itemCount - 1
             )
+
+            var balance = BigDecimal(0)
+
+            thread(start = true) {
+                for (expenditure in expenditures) {
+                    balance = balance.add(expenditure.value)
+                }
+
+                activity?.runOnUiThread {
+                    view.remainingMoneyTextView.setText(balance.setScale(2).toPlainString()) // Set the number to always have 2 decimal places
+
+                    if (balance >= BigDecimal(0)) {
+                        remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorPositive))
+                    } else {
+                        remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorNegative))
+                    }
+                }
+            }
         })
 
         adapter = ExpenditureAdapter()

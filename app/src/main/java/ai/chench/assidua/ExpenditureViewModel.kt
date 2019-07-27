@@ -67,6 +67,12 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
+    fun deleteLastExpenditure(budget: Budget) {
+        uiScope.launch(Dispatchers.IO) {
+            repository.deleteLastExpenditure(budget)
+        }
+    }
+
     /**
      * @param budget The budget for which to add the expenditure to
      */

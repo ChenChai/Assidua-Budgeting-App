@@ -18,6 +18,10 @@ class BudgetRepository (private val expenditureDAO: ExpenditureDAO) {
         expenditureDAO.deleteExpenditure(expenditure.id)
     }
 
+    fun deleteLastExpenditure(budget: Budget) {
+        expenditureDAO.deleteLastExpenditureFromBudget(budget.id)
+    }
+
     @WorkerThread
     suspend fun insertBudget(budget: Budget) {
         expenditureDAO.insertBudget(budget)
