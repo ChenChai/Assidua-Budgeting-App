@@ -21,4 +21,8 @@
 
     <string name="error_not_a_number">Please enter a number.</string>
     <string name="error_number_too_big">Please enter a smaller number.</string>
+
+
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
 </resources>
