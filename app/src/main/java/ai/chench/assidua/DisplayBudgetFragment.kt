@@ -1,5 +1,6 @@
 package ai.chench.assidua
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,8 +32,6 @@ class DisplayBudgetFragment : Fragment() {
 
     private var balance = BigDecimal(0)
     private var expenditures: MutableList<Expenditure> = ArrayList()// A most-recent list of expenditures
-
-
 
     private val clickListener = View.OnClickListener { view ->
         when (view) {
@@ -145,6 +144,11 @@ class DisplayBudgetFragment : Fragment() {
             view.switchTextView.text = if (checked) "Income" else "Expense"
         }
         view.switchTextView.text = "Expense"
+
+        view.settingsButton.setOnClickListener {
+            val intent = Intent(context, BudgetSettingsActivity::class.java)
+            startActivity(intent)
+        }
 
         return view
     }
