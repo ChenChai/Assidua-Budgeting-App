@@ -143,9 +143,8 @@ class DisplayBudgetFragment : Fragment() {
         view.expendituresRecyclerView.layoutManager = layoutManager
 
         view.incomeSwitch.setOnCheckedChangeListener { _, checked ->
-            view.switchTextView.text = if (checked) getString(R.string.expense) else getString(R.string.income)
+            view.switchTextView.text = if (checked) getString(R.string.income) else getString(R.string.expense)
         }
-        view.switchTextView.text = getString(R.string.expense)
 
         view.settingsButton.setOnClickListener {
             val intent = Intent(context, BudgetSettingsActivity::class.java)
