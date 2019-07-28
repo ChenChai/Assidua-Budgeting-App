@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_create_budget.view.*
 import kotlinx.android.synthetic.main.fragment_display_budget.*
 import kotlinx.android.synthetic.main.fragment_display_budget.view.*
 import java.math.BigDecimal
@@ -148,6 +150,19 @@ class DisplayBudgetFragment : Fragment() {
         view.settingsButton.setOnClickListener {
             val intent = Intent(context, BudgetSettingsActivity::class.java)
             startActivity(intent)
+        }
+
+        // When the user finishes with the name entry field, automatically insert the expenditure.
+        // Then, switch the focus back to the expenditure value edit text
+        view.expenditureNameEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
+            return@setOnEditorActionListener when(actionId) {
+                EditorInfo.IME_ACTION_GO -> {
+                    view.addExpenditureButton.performClick()
+                    view.expenditureCostEditText.requestFocus()
+                    true
+                }
+                else -> false
+            }
         }
 
         return view

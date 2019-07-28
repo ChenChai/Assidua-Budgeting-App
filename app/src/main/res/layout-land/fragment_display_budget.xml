@@ -70,6 +70,7 @@
                 android:ems="10"
                 android:hint="@string/add_expenditure_cost"
                 android:inputType="numberSigned|number|numberDecimal"
+                android:imeOptions="actionNext"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +112,8 @@
                 android:layout_marginRight="16dp"
                 android:ems="10"
                 android:hint="@string/add_expenditure_name"
-                android:inputType="textPersonName"
+                android:inputType="textShortMessage"
+                android:imeOptions="actionGo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/expenditureCostEditText" />
