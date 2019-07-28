@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -126,9 +127,9 @@ class DisplayBudgetFragment : Fragment() {
                     view.remainingMoneyTextView.setText(balance.setScale(2).toPlainString()) // Set the number to always have 2 decimal places
 
                     if (balance >= BigDecimal(0)) {
-                        remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorPositive))
+                        context?.resources?.let {view.remainingMoneyTextView.setTextColor(it.getColor(R.color.colorPositive) )}
                     } else {
-                        remainingMoneyTextView.setTextColor(resources.getColor(R.color.colorNegative))
+                        context?.resources?.let {view.remainingMoneyTextView.setTextColor(it.getColor(R.color.colorNegative) )}
                     }
                 }
             }
