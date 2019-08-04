@@ -63,6 +63,9 @@ dependencies {
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 
+    // OpenCSV
+    implementation "com.opencsv:opencsv:4.0"
+
     // Coroutines
 //    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
 //    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"

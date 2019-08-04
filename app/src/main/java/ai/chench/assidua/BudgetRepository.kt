@@ -1,16 +1,25 @@
 package ai.chench.assidua
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.io.File
 import java.util.*
 import kotlin.collections.HashMap
 
-class BudgetRepository(val directory: File) {
+class BudgetRepository(private val budgetDirectory: File) {
     // Extension to update observers of updated data
     fun <T> MutableLiveData<T>.notifyObservers() {
         this.value = this.value
+
+        // TODO we don't necessarily need to
+        saveBudgets()
     }
+
+    companion object {
+        const val TAG = "BudgetRepository"
+    }
+
 
     private val _allBudgets: MutableLiveData<MutableMap<UUID, Budget>> = MutableLiveData()
 
@@ -20,14 +29,21 @@ class BudgetRepository(val directory: File) {
 
     init {
         val budgetMap: MutableMap<UUID, Budget> = HashMap()
-        CsvParser.parseBudget(directory).let { budgetMap.put(it!!.id, it) }
-        _allBudgets.value = budgetMap
 
-//        // Read all the stuff from the file
-//        directory.listFiles().forEach {
-//            val budget: Budget? = CsvParser.parseBudget(it)
-//            budget?.let { budgets.add(budget) }
-//        }
+        budgetDirectory.mkdirs()
+        // Read all the budgets from the directory
+        budgetDirectory.listFiles().forEach { file ->
+            Log.d(TAG, "Attempting to parse a budget from: $file")
+            // Attempt to parse the budget
+            CsvBudgetParser.parseBudget(file)?.let {
+
+                // If successful, add the budget to the map
+                budget -> budgetMap.put(budget.id, budget)
+            }
+        }
+
+        // Provide the initial budget value
+        _allBudgets.value = budgetMap
     }
 
     fun getBudgetFromId(id: UUID): Budget? {
@@ -68,6 +84,13 @@ class BudgetRepository(val directory: File) {
             }
         }
         _allBudgets.notifyObservers()
+    }
+
+    private fun saveBudgets() {
+        _allBudgets.value?.forEach {
+            val budget = it.value
+            CsvBudgetParser.saveBudget(budget, File(budgetDirectory, budget.id.toString()))
+        }
     }
 
 //    //Old database code
