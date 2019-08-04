@@ -12,6 +12,10 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import kotlin.jvm.internal.markers.KMutableMap;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -32,9 +36,12 @@ public class MainActivity extends AppCompatActivity {
                 FragmentStatePagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT,
                 new ArrayList<>());
 
-        viewModel.getBudgets().observe(this, (List<Budget> budgets) -> {
-            Log.d(TAG, "new budget size: " + budgets.size() + " Notifying adapter!");
-            adapter.setBudgets(budgets);
+        viewModel.getBudgets().observe(this, (Map<UUID, Budget> budgetMap) -> {
+            Log.d(TAG, "new budget size: " + budgetMap.size() + " Notifying adapter!");
+
+            List<Budget> budgetList = new ArrayList<>(budgetMap.values());
+
+            adapter.setBudgets(budgetList);
             adapter.notifyDataSetChanged();
         });
 

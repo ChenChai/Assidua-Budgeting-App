@@ -6,7 +6,7 @@ import java.math.BigDecimal
 class CsvParser {
     companion object {
         fun parseBudget(csv: File): Budget? {
-            return Budget("Test", BigDecimal(123), mutableListOf<Expenditure>())
+            return Budget("Test", BigDecimal(0), mutableListOf<Expenditure>())
         }
     }
 }

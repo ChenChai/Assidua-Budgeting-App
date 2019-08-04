@@ -28,7 +28,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    val budgets: LiveData<MutableList<Budget>>
+    val budgets: LiveData<MutableMap<UUID, Budget>>
     private val repository: BudgetRepository
 
     init {
@@ -55,7 +55,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun deleteLastExpenditure(budget: Budget) {
-
+        repository.deleteLastExpenditure(budget.id)
     }
 
     /**
