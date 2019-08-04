@@ -2,6 +2,7 @@ package ai.chench.assidua
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,12 +28,14 @@ class DisplayBudgetFragment : Fragment() {
     companion object {
         // Used for passing in the budget UUID via arguments to this fragment
         public const val ARGUMENT_BUDGET_UUID = "ARGUMENT_BUDGET_UUID"
+        private const val TAG = "DisplayBudgetFragment"
     }
 
     private lateinit var viewModel: ExpenditureViewModel
     private lateinit var adapter: ExpenditureAdapter
-    private lateinit var budget: LiveData<Budget> // Id of the budget this fragment is displaying
-    private lateinit var budgetUUID: UUID
+    private lateinit var budget: Budget
+    private lateinit var budgets: LiveData<List<Budget>>
+    private lateinit var budgetUUID: UUID  // Id of the budget this fragment is displaying
 
     private val clickListener = View.OnClickListener { view ->
         when (view) {
@@ -39,7 +43,7 @@ class DisplayBudgetFragment : Fragment() {
                 // We haven't found the budget yet from the database.
                 // This means that everything's going really slowly or
                 // more likely, something's wrong.
-                if (budget.value == null) { return@OnClickListener }
+                if (budget == null) { return@OnClickListener }
 
                 var expenditureValue: BigDecimal
                 try {
@@ -64,13 +68,13 @@ class DisplayBudgetFragment : Fragment() {
 
                 viewModel.addExpenditure(
                         Expenditure(name, expenditureValue, Date(), budgetUUID),
-                        budget.value!!)
+                        budget)
                 expenditureNameEditText.setText("")
                 expenditureCostEditText.setText("")
             }
 
             undoExpenditureButton -> {
-                budget.value?.let { viewModel.deleteLastExpenditure(it) }
+                budget.let { viewModel.deleteLastExpenditure(it) }
             }
         }
     }
@@ -87,13 +91,17 @@ class DisplayBudgetFragment : Fragment() {
         }
 
         budgetUUID = UUID.fromString(arguments!!.getString(ARGUMENT_BUDGET_UUID))
-        budget = viewModel.getBudget(budgetUUID)
+        budgets = viewModel.budgets
 
-        budget.observe(this, Observer {
+        budgets.observe(this, Observer {
+            budget = viewModel.getBudget(budgetUUID)!! // TODO Figure out what to do with null values
+
             // TODO figure out if the budget should actually hold info on
             //  balance, or if we should just recalculate it each time
 
-            adapter.setExpenditures(it.expenditures)
+            Log.d(TAG, "Budget '${budget.name}' just had its observer called! Balance: ${budget.balance}")
+
+            adapter.setExpenditures(budget.expenditures)
 
             // Scroll to the top to see the most recently added transaction
             expendituresRecyclerView.smoothScrollToPosition(
@@ -101,7 +109,7 @@ class DisplayBudgetFragment : Fragment() {
                     else adapter.itemCount - 1
             )
 
-            val balance = it.balance
+            val balance = budget.balance
             activity?.runOnUiThread {
                 view.remainingMoneyTextView.setText(balance.setScale(2).toPlainString()) // Set the number to always have 2 decimal places
 

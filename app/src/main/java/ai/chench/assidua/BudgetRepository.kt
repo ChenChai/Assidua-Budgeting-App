@@ -32,19 +32,20 @@ class BudgetRepository(val directory: File) {
 //        }
     }
 
-    fun getBudgetFromId(id: UUID): LiveData<Budget> {
-        val m = MutableLiveData<Budget>()
+    fun getBudgetFromId(id: UUID): Budget? {
 
-        m.value = _allBudgets.value?.find {
+        return _allBudgets.value?.find {
             it.id == id
         }
-
-        return m
     }
 
-    fun addExpenditure(expenditure: Expenditure, budget: Budget) {
-        budget.expenditures.add(expenditure)
-        budget.balance.add(expenditure.value)
+    fun addExpenditure(expenditure: Expenditure, budgetId: UUID) {
+        val budget = getBudgetFromId(budgetId)
+        budget?.let {
+            it.balance = budget.balance.add(expenditure.value)
+            it.expenditures.add(expenditure)
+        }
+
         _allBudgets.notifyObservers()
     }
 

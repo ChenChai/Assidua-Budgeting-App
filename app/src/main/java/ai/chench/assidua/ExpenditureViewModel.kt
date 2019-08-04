@@ -42,7 +42,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
 
     }
 
-    fun getBudget(budgetId: UUID): LiveData<Budget> {
+    fun getBudget(budgetId: UUID): Budget? {
         return repository.getBudgetFromId(budgetId)
     }
 
@@ -62,6 +62,6 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
      * @param budget The budget for which to add the expenditure to
      */
     fun addExpenditure(expenditure: Expenditure, budget: Budget) {
-        repository.addExpenditure(expenditure, budget)
+        repository.addExpenditure(expenditure, budget.id)
     }
 }
