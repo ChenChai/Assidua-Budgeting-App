@@ -28,7 +28,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    val budgets: LiveData<List<Budget>>
+    val budgets: LiveData<MutableList<Budget>>
     private val repository: BudgetRepository
 
     init {
@@ -39,7 +39,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun addBudget(budget: Budget) {
-
+        repository.addBudget(budget)
     }
 
     fun getBudget(budgetId: UUID): Budget? {

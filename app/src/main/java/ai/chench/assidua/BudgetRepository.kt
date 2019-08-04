@@ -14,10 +14,10 @@ class BudgetRepository(val directory: File) {
         this.value = this.value
     }
 
-    private val _allBudgets: MutableLiveData<List<Budget>> = MutableLiveData()
+    private val _allBudgets: MutableLiveData<MutableList<Budget>> = MutableLiveData()
 
     // Backing property: https://kotlinlang.org/docs/reference/properties.html#backing-properties
-    val allBudgets: LiveData<List<Budget>>
+    val allBudgets: LiveData<MutableList<Budget>>
         get() = _allBudgets
 
     init {
@@ -49,6 +49,11 @@ class BudgetRepository(val directory: File) {
         _allBudgets.notifyObservers()
     }
 
+
+    fun addBudget(budget: Budget) {
+        _allBudgets.value?.add(budget)
+        _allBudgets.notifyObservers()
+    }
 //    //Old database code
 //    val allExpendiures: LiveData<List<Expenditure>> = expenditureDAO.getAllExpenditures()
 //    val allBudgets: LiveData<List<Budget>> = expenditureDAO.getAllBudgets()

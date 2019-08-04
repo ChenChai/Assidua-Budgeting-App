@@ -34,7 +34,7 @@ class DisplayBudgetFragment : Fragment() {
     private lateinit var viewModel: ExpenditureViewModel
     private lateinit var adapter: ExpenditureAdapter
     private lateinit var budget: Budget
-    private lateinit var budgets: LiveData<List<Budget>>
+    private lateinit var budgets: LiveData<MutableList<Budget>>
     private lateinit var budgetUUID: UUID  // Id of the budget this fragment is displaying
 
     private val clickListener = View.OnClickListener { view ->
