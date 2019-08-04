@@ -25,4 +25,6 @@
 
     <string name="expense">Expense</string>
     <string name="income">Income</string>
+
+    <string name="delete">Delete</string>
 </resources>
