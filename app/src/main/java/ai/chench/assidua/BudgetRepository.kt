@@ -12,7 +12,7 @@ class BudgetRepository(private val budgetDirectory: File) {
     fun <T> MutableLiveData<T>.notifyObservers() {
         this.value = this.value
 
-        // TODO we don't necessarily need to
+        // TODO we don't necessarily need to save it every time
         saveBudgets()
     }
 
