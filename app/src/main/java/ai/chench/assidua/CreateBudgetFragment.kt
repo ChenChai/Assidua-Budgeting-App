@@ -23,7 +23,7 @@ class CreateBudgetFragment : Fragment() {
 
         view.createBudgetButton.setOnClickListener {
             viewModel.addBudget(
-                    Budget(view.budgetNameEditText.text.toString(), BigDecimal(0)))
+                    Budget(view.budgetNameEditText.text.toString(), BigDecimal(0), mutableListOf()))
         }
 
         return view

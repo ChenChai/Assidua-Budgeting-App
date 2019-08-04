@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">Assidua</string>
-    <string name="preference_file_key">ai.chench.assidua.PREFERENCE_FILE_KEY</string>
 
     <!-- Keys for shared preferencees (Deprecated) -->
+    <string name="preference_file_key">ai.chench.assidua.PREFERENCE_FILE_KEY</string>
+
+    <!-- Name of file directory where budgets CSVs are stored. DO NOT CHANGE! -->
+    <string name="budget_directory_location">budgets</string>
+
     <string name="balance_remaining_key">BALANCE_REMAINING</string>
     <string name="expenditures_key">EXPENDITURES</string>
     <string name="budgets_key">BUDGET</string>

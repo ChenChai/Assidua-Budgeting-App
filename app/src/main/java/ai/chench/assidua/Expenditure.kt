@@ -8,14 +8,9 @@ import java.util.*
 
 @Entity(tableName = "expenditure_table")
 data class Expenditure(
-        @ColumnInfo(name = "name") var name: String,
-        @ColumnInfo(name = "value") var value: BigDecimal,
-        @ColumnInfo(name = "date") var date: Date,
-        @ColumnInfo(name = "budget_id") var budgetId: UUID) {
-
-        @PrimaryKey
-
-        @ColumnInfo(name = "id")
-        var id: UUID = UUID.randomUUID()
-}
+        var name: String,
+        var value: BigDecimal,
+        var date: Date,
+        var budgetId: UUID,
+        var id: UUID = UUID.randomUUID())
 

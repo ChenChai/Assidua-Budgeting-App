@@ -33,9 +33,6 @@ class DisplayBudgetFragment : Fragment() {
     private lateinit var budget: LiveData<Budget> // Id of the budget this fragment is displaying
     private lateinit var budgetUUID: UUID
 
-    private var balance = BigDecimal(0)
-    private var expenditures: MutableList<Expenditure> = ArrayList()// A most-recent list of expenditures
-
     private val clickListener = View.OnClickListener { view ->
         when (view) {
             addExpenditureButton -> {
@@ -73,15 +70,12 @@ class DisplayBudgetFragment : Fragment() {
             }
 
             undoExpenditureButton -> {
-                if (expenditures.isNotEmpty() && budget.value != null) {
-                    viewModel.deleteLastExpenditure(budget.value!!)
-                }
+                budget.value?.let { viewModel.deleteLastExpenditure(it) }
             }
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
 
         val view = inflater.inflate(R.layout.fragment_display_budget, container, false)
 
@@ -92,23 +86,14 @@ class DisplayBudgetFragment : Fragment() {
             viewModel = ViewModelProviders.of(this).get(ExpenditureViewModel::class.java)
         }
 
-
         budgetUUID = UUID.fromString(arguments!!.getString(ARGUMENT_BUDGET_UUID))
         budget = viewModel.getBudget(budgetUUID)
 
         budget.observe(this, Observer {
             // TODO figure out if the budget should actually hold info on
             //  balance, or if we should just recalculate it each time
-        })
 
-        view.addExpenditureButton.setOnClickListener(clickListener)
-        view.undoExpenditureButton.setOnClickListener(clickListener)
-
-        viewModel.getExpenditures(budgetUUID).observe(this, Observer {
-            adapter.setExpenditures(it)
-
-            // update fragment reference to list of expenditures
-            expenditures = it.toMutableList()
+            adapter.setExpenditures(it.expenditures)
 
             // Scroll to the top to see the most recently added transaction
             expendituresRecyclerView.smoothScrollToPosition(
@@ -116,24 +101,20 @@ class DisplayBudgetFragment : Fragment() {
                     else adapter.itemCount - 1
             )
 
-            var balance = BigDecimal(0)
+            val balance = it.balance
+            activity?.runOnUiThread {
+                view.remainingMoneyTextView.setText(balance.setScale(2).toPlainString()) // Set the number to always have 2 decimal places
 
-            thread(start = true) {
-                for (expenditure in expenditures) {
-                    balance = balance.add(expenditure.value)
-                }
-
-                activity?.runOnUiThread {
-                    view.remainingMoneyTextView.setText(balance.setScale(2).toPlainString()) // Set the number to always have 2 decimal places
-
-                    if (balance >= BigDecimal(0)) {
-                        context?.resources?.let {view.remainingMoneyTextView.setTextColor(it.getColor(R.color.colorPositive) )}
-                    } else {
-                        context?.resources?.let {view.remainingMoneyTextView.setTextColor(it.getColor(R.color.colorNegative) )}
-                    }
+                if (balance >= BigDecimal(0)) {
+                    context?.resources?.let {view.remainingMoneyTextView.setTextColor(it.getColor(R.color.colorPositive) )}
+                } else {
+                    context?.resources?.let {view.remainingMoneyTextView.setTextColor(it.getColor(R.color.colorNegative) )}
                 }
             }
         })
+
+        view.addExpenditureButton.setOnClickListener(clickListener)
+        view.undoExpenditureButton.setOnClickListener(clickListener)
 
         adapter = ExpenditureAdapter()
 

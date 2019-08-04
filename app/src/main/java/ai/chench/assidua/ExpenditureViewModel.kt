@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.io.File
 
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -31,21 +32,14 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     private val repository: BudgetRepository
 
     init {
-        Log.d(TAG, "Created a new ${TAG}")
-        val dao = AssiduaRoomDatabase.getDatabase(application).expenditureDAO()
-        repository = BudgetRepository(dao)
+        Log.d(TAG, "Created a new $TAG")
+        repository = BudgetRepository(File(application.filesDir, application.getString(R.string.budget_directory_location)))
 
         budgets = repository.allBudgets
     }
 
     fun addBudget(budget: Budget) {
-        uiScope.launch(Dispatchers.IO) {
-            repository.insertBudget(budget)
-        }
-    }
 
-    fun getExpenditures(budgetId: UUID) : LiveData<List<Expenditure>> {
-        return repository.getExpendituresFromBudget(budgetId)
     }
 
     fun getBudget(budgetId: UUID): LiveData<Budget> {
@@ -57,30 +51,17 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
      * @param budget The budget from which to delete the expenditure.
      */
     fun deleteExpenditure(expenditure: Expenditure, budget: Budget) {
-        uiScope.launch(Dispatchers.IO) {
-            // Synchronize so that we don't mess up the budget value
-            synchronized(getApplication()) {
-                repository.deleteExpenditure(expenditure) // delete expenditure from database
-                budget.balance = budget.balance.subtract(expenditure.value) // update budget value
-                repository.updateBudget(budget) // update budget value in database
-            }
-        }
+
     }
 
     fun deleteLastExpenditure(budget: Budget) {
-        uiScope.launch(Dispatchers.IO) {
-            repository.deleteLastExpenditure(budget)
-        }
+
     }
 
     /**
      * @param budget The budget for which to add the expenditure to
      */
     fun addExpenditure(expenditure: Expenditure, budget: Budget) {
-        uiScope.launch(Dispatchers.IO) {
-            repository.insertExpenditure(expenditure)
-            budget.balance = budget.balance.add(expenditure.value)
-            repository.updateBudget(budget)
-        }
+        repository.addExpenditure(expenditure, budget)
     }
 }
