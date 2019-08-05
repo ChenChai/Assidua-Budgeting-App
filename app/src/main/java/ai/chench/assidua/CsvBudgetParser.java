@@ -6,9 +6,11 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class CsvBudgetParser {
         Budget budget;
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(csv));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(csv), 1000);
             CSVReader csvReader = new CSVReader(bufferedReader);
             String[] budgetRecord = csvReader.readNext();
 
@@ -46,9 +48,7 @@ public class CsvBudgetParser {
             budgetBalance = budgetRecord[BUDGET_BALANCE];
             UUID budgetId = UUID.fromString(budgetRecord[BUDGET_UUID]);
 
-
             List<Expenditure> expenditures = new ArrayList<>();
-
 
             String[] expenditureRecord;
             while ((expenditureRecord = csvReader.readNext()) != null) {
@@ -59,6 +59,7 @@ public class CsvBudgetParser {
                         budgetId,
                         UUID.fromString(expenditureRecord[EXPENDITURE_UUID])
                 ));
+                Log.d(TAG, "Added Expenditure number " + expenditures.size());
             }
 
             budget = new Budget(budgetName, new BigDecimal(budgetBalance), expenditures, budgetId);
@@ -73,8 +74,8 @@ public class CsvBudgetParser {
     public static boolean saveBudget(Budget budget, File output) {
         Log.d(TAG, "Saving budget " + budget.getName() + " to " + output.getAbsolutePath());
         try {
-            PrintWriter printWriter = new PrintWriter(output);
-            CSVWriter csvWriter = new CSVWriter(printWriter);
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(output), 1000);
+            CSVWriter csvWriter = new CSVWriter(bufferedWriter);
 
             // Write the budget as the first line of the csv
             String[] budgetRecord = new String[3];
@@ -97,6 +98,7 @@ public class CsvBudgetParser {
             }
 
             csvWriter.close();
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();

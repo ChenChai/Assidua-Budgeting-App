@@ -11,9 +11,6 @@ class BudgetRepository(private val budgetDirectory: File) {
     // Extension to update observers of updated data
     fun <T> MutableLiveData<T>.notifyObservers() {
         this.value = this.value
-
-        // TODO we don't necessarily need to save it every time
-        saveBudgets()
     }
 
     companion object {
@@ -55,8 +52,9 @@ class BudgetRepository(private val budgetDirectory: File) {
         budget?.let {
             it.balance = budget.balance.add(expenditure.value)
             it.expenditures.add(expenditure)
-        }
 
+            saveBudget(budget)
+        }
         _allBudgets.notifyObservers()
     }
 
@@ -81,16 +79,22 @@ class BudgetRepository(private val budgetDirectory: File) {
                         // remove the last element from the list
                         it.expenditures.size - 1
                 )
+
+                saveBudget(budget)
             }
         }
         _allBudgets.notifyObservers()
     }
 
-    private fun saveBudgets() {
+    private fun saveAllBudgets() {
         _allBudgets.value?.forEach {
             val budget = it.value
             CsvBudgetParser.saveBudget(budget, File(budgetDirectory, budget.id.toString()))
         }
+    }
+
+    private fun saveBudget(budget: Budget) {
+        CsvBudgetParser.saveBudget(budget, File(budgetDirectory, budget.id.toString()))
     }
 
 //    //Old database code
