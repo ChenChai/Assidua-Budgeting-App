@@ -72,7 +72,7 @@ class BudgetRepository(private val budgetDirectory: File) {
                 val expenditure = it.expenditures.last()
 
                 // subtract that value from the balance
-                budget.balance.subtract(expenditure.value)
+                budget.balance = budget.balance.subtract(expenditure.value)
 
                 // Remove the expenditure from the list
                 it.expenditures.removeAt(
@@ -81,9 +81,9 @@ class BudgetRepository(private val budgetDirectory: File) {
                 )
 
                 saveBudget(budget)
+                _allBudgets.notifyObservers()
             }
         }
-        _allBudgets.notifyObservers()
     }
 
     private fun saveAllBudgets() {
