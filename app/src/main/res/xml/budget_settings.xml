@@ -2,13 +2,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        app:title="Test">
-        <EditTextPreference
-            app:key="budget_name"
-            app:title="Name"
-            app:useSimpleSummaryProvider="true"
-            app:dialogTitle="Set the title of your budget!"
-            />
-    </PreferenceCategory>
+    <EditTextPreference
+        app:key="budget_name"
+        app:title="Budget Name"
+        app:useSimpleSummaryProvider="true"
+        app:dialogTitle="Set the title of your budget!"
+        />
+    <Preference
+        android:icon="@drawable/ic_arrow_left"
+        app:title="Move Left" />
+    <Preference
+        android:icon="@drawable/ic_arrow_right"
+        app:title="Move Right" />
+    <Preference
+        app:title="Delete Budget"
+        app:summary="This action cannot be undone!"/>
+
 </PreferenceScreen>
