@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.google.gson.Gson;
-
 import java.util.List;
+
+import ai.chench.assidua.data.Budget;
 
 /**
  * ViewPager adapter that creates fragments which each display a budget.

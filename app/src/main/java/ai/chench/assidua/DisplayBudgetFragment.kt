@@ -1,5 +1,8 @@
 package ai.chench.assidua
 
+import ai.chench.assidua.data.Budget
+import ai.chench.assidua.data.Expenditure
+import ai.chench.assidua.data.ExpenditureViewModel
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,21 +10,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_create_budget.view.*
 import kotlinx.android.synthetic.main.fragment_display_budget.*
 import kotlinx.android.synthetic.main.fragment_display_budget.view.*
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
-import kotlin.concurrent.thread
 
 class DisplayBudgetFragment : Fragment() {
 

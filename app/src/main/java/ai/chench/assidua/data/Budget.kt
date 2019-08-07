@@ -1,4 +1,4 @@
-package ai.chench.assidua
+package ai.chench.assidua.data
 
 import java.math.BigDecimal
 import java.util.*

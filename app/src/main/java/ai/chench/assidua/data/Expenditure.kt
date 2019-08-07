@@ -1,4 +1,4 @@
-package ai.chench.assidua
+package ai.chench.assidua.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

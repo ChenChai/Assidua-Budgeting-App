@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import ai.chench.assidua.data.Expenditure;
+
 public class ExpenditureAdapter extends RecyclerView.Adapter<ExpenditureAdapter.ViewHolder> {
     private static final String TAG = "ExpenditureAdapter";
 
