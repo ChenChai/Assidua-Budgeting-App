@@ -13,8 +13,15 @@ class BudgetSettingsActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Settings"
 
+        // Show the back button in the top corner
+        // that will bring the user back.
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        supportFragmentManager.beginTransaction().add(
+                R.id.settings,
+                BudgetSettingsFragment())
+                .commit()
     }
 
     override fun onSupportNavigateUp(): Boolean {
