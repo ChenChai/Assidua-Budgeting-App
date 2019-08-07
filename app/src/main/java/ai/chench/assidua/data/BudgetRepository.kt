@@ -61,6 +61,7 @@ class BudgetRepository(private val budgetDirectory: File) {
 
     fun addBudget(budget: Budget) {
         _allBudgets.value?.put(budget.id, budget)
+        saveBudget(budget)
         _allBudgets.notifyObservers()
     }
 
