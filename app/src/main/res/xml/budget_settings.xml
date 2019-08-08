@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditTextPreference
-        app:dialogTitle="Set the title of your budget!"
+        app:dialogTitle="@string/set_budget_name"
         app:key="budget_name"
-        app:title="Budget Name"
+        app:title="@string/budget_name"
         app:useSimpleSummaryProvider="true" />
     <Preference
         android:icon="@drawable/ic_arrow_left"
-        app:title="Move Left" />
+        app:title="@string/move_left" />
     <Preference
         android:icon="@drawable/ic_arrow_right"
-        app:title="Move Right" />
+        app:title="@string/move_right" />
     <Preference
-        app:summary="This action cannot be undone!"
-        app:title="Delete Budget" />
+        app:title="@string/delete_budget"
+        app:summary="@string/action_cannot_be_undone" />
 
 </PreferenceScreen>

@@ -11,6 +11,21 @@
     <string name="expenditures_key">EXPENDITURES</string>
     <string name="budgets_key">BUDGET</string>
 
+
+
+    <!-- Displayed when creating a new budget -->
+    <string name="create_new_budget">Create a new budget!</string>
+    <string name="new_budget_name">Budget Name</string>
+    <string name="create_button_text">Create!</string>
+
+    <!-- Displayed on each display budget fragment -->
+    <string name="error_not_a_number">Please enter a number.</string>
+    <string name="error_number_too_big">Please enter a smaller number.</string>
+
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
+    <string name="delete">Delete</string>
+
     <string name="remaining_budget">Remaining Budget:</string>
     <string name="add_expenditure_cost">Cost</string>
     <string name="add_expenditure_name">Name (Optional)</string>
@@ -18,17 +33,14 @@
     <string name="add_button_text">Commit</string>
     <string name="untitled_expenditure">Untitled</string>
 
-    <!-- Displayed when creating a new budget -->
-    <string name="create_new_budget">Create a new budget!</string>
-    <string name="new_budget_name">Budget Name</string>
-    <string name="create_button_text">Create!</string>
+    <!-- Displayed in individual budgets' settings pages -->
+    <string name="set_budget_name">Set Budget Name:</string>
+    <string name="budget_name">Budget Name</string>
 
-    <string name="error_not_a_number">Please enter a number.</string>
-    <string name="error_number_too_big">Please enter a smaller number.</string>
+    <string name="move_left">Move Left</string>
+    <string name="move_right">Move Right</string>
 
+    <string name="delete_budget">Delete budget</string>
+    <string name="action_cannot_be_undone">This action cannot be undone!</string>
 
-    <string name="expense">Expense</string>
-    <string name="income">Income</string>
-
-    <string name="delete">Delete</string>
 </resources>
