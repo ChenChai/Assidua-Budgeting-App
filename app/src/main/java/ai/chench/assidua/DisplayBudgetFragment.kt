@@ -3,7 +3,6 @@ package ai.chench.assidua
 import ai.chench.assidua.data.Budget
 import ai.chench.assidua.data.Expenditure
 import ai.chench.assidua.data.ExpenditureViewModel
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,14 +24,14 @@ class DisplayBudgetFragment : Fragment() {
 
     companion object {
         // Used for passing in the budget UUID via arguments to this fragment
-        public const val ARGUMENT_BUDGET_UUID = "ARGUMENT_BUDGET_UUID"
+        const val ARGUMENT_BUDGET_UUID = "ARGUMENT_BUDGET_UUID"
         private const val TAG = "DisplayBudgetFragment"
     }
 
     private lateinit var viewModel: ExpenditureViewModel
     private lateinit var adapter: ExpenditureAdapter
     private lateinit var budget: Budget
-    private lateinit var budgetUUID: UUID  // Id of the budget this fragment is displaying
+    private lateinit var budgetId: UUID  // Id of the budget this fragment is displaying
 
     private val clickListener = View.OnClickListener { view ->
         when (view) {
@@ -64,7 +63,7 @@ class DisplayBudgetFragment : Fragment() {
                 name = if (name == "") getString(R.string.untitled_expenditure) else name
 
                 viewModel.addExpenditure(
-                        Expenditure(name, expenditureValue, Date(), budgetUUID),
+                        Expenditure(name, expenditureValue, Date(), budgetId),
                         budget)
                 expenditureNameEditText.setText("")
                 expenditureCostEditText.setText("")
@@ -87,11 +86,11 @@ class DisplayBudgetFragment : Fragment() {
             viewModel = ViewModelProviders.of(this).get(ExpenditureViewModel::class.java)
         }
 
-        budgetUUID = UUID.fromString(arguments!!.getString(ARGUMENT_BUDGET_UUID))
+        budgetId = UUID.fromString(arguments!!.getString(ARGUMENT_BUDGET_UUID))
         val budgets = viewModel.budgets
 
         budgets.observe(this, Observer {
-            budget = viewModel.getBudget(budgetUUID)!! // TODO Figure out what to do with null values
+            budget = viewModel.getBudget(budgetId)!! // TODO Figure out what to do with null values
 
             // TODO figure out if the budget should actually hold info on
             //  balance, or if we should just recalculate it each time
@@ -134,8 +133,20 @@ class DisplayBudgetFragment : Fragment() {
         }
 
         view.settingsButton.setOnClickListener {
-            val intent = Intent(context, BudgetSettingsActivity::class.java)
-            startActivity(intent)
+            // Launch the settings fragment to allow the user to modify this budget
+            val settingsFragment = BudgetSettingsFragment()
+
+            // Put UUID as argument to the fragment
+            val args = Bundle().apply {
+                putString(BudgetSettingsFragment.ARGUMENT_BUDGET_UUID, budgetId.toString())
+            }
+
+            settingsFragment.arguments = args
+
+            fragmentManager?.beginTransaction()?.replace(
+                    R.id.settings,
+                    settingsFragment
+            )?.commitAllowingStateLoss()
         }
 
         // When the user finishes with the name entry field, automatically insert the expenditure.

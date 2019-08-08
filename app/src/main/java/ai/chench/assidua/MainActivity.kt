@@ -15,6 +15,7 @@ import java.util.UUID
 
 import ai.chench.assidua.data.Budget
 import ai.chench.assidua.data.ExpenditureViewModel
+import ai.chench.assidua.util.BackPressable
 import androidx.lifecycle.Observer
 
 class MainActivity : AppCompatActivity() {
@@ -46,14 +47,27 @@ class MainActivity : AppCompatActivity() {
         viewPager.setAdapter(adapter)
         tabLayout.setupWithViewPager(viewPager)
 
-
-
-
-
-
     }
 
     companion object {
         private val TAG = "MainActivity"
+    }
+
+    override fun onBackPressed() {
+        val settingsFragment = supportFragmentManager.findFragmentById(R.id.settings)
+        val pressHandled = (settingsFragment as? BackPressable)?.onBackPressed()
+
+        // If the fragment didn't handle the press, we'll handle it normally instead.
+        if (pressHandled == false) {
+            super.onBackPressed()
+        }
+    }
+
+
+    // If the settings fragment needs to use the action bar's
+    // navigate up button, we'll simulate a back press with it.
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }
