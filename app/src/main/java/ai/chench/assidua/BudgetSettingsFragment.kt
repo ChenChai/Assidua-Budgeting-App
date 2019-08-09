@@ -97,7 +97,7 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
                 ?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
             AlertDialog.Builder(context)
-                    .setTitle(getString(R.string.confirm_delete_budget))
+                    .setTitle(String.format(getString(R.string.confirm_delete_budget), if (budget?.name != null) budget?.name else ""))
                     .setPositiveButton(getString(R.string.yes_delete_budget)
                     ) { dialogInterface: DialogInterface?, which: Int ->
                         // Delete budget

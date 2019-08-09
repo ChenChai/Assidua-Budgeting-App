@@ -48,7 +48,7 @@
 
     <string name="delete_budget">Delete budget</string>
     <string name="action_cannot_be_undone">This action cannot be undone!</string>
-    <string name="confirm_delete_budget">Delete this budget?</string>
+    <string name="confirm_delete_budget">Delete budget %s?</string>
     <string name="yes_delete_budget">Delete Budget</string>
     <string name="no_delete_budget">Cancel</string>
 
