@@ -15,6 +15,7 @@
         app:title="@string/move_right" />
     <Preference
         app:title="@string/delete_budget"
+        app:key="@string/preference_budget_delete_key"
         app:summary="@string/action_cannot_be_undone" />
 
 </PreferenceScreen>

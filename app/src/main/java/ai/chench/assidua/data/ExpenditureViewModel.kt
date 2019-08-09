@@ -45,6 +45,15 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     /**
+     * Deletes a budget.
+     * @param budgetId The UUID of the budget to delete
+     * @return whether the deletion was successful.
+     */
+    fun deleteBudget(budgetId: UUID): Boolean {
+        return repository.deleteBudget(budgetId)
+    }
+
+    /**
      * @param expenditure The expenditure to delete
      * @param budget The budget from which to delete the expenditure.
      */

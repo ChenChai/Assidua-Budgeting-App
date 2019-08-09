@@ -4,6 +4,8 @@ import ai.chench.assidua.data.Budget
 import ai.chench.assidua.data.ExpenditureViewModel
 import ai.chench.assidua.util.BackPressable
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -15,8 +17,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.EditTextPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import java.lang.StringBuilder
 import java.util.*
 
 class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
@@ -71,18 +73,50 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
 
         // Define it here as otherwise, getString() may fail as it requires a context.
         sharedPrefsListener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPrefs: SharedPreferences, key: String->
-            // Check if user just changed the title
-            if (key == getString(R.string.preference_budget_name_key)) {
-                val newTitle = sharedPrefs.getString(key, "")
 
-                newTitle?.let {
-                    // update the name of the budget
-                    viewModel.setBudgetName(budgetId, it)
+            when (key) {
+                getString(R.string.preference_budget_name_key) -> {
+                    // Check if user just changed the title
+
+                    val newTitle = sharedPrefs.getString(key, "")
+
+                    newTitle?.let {
+                        // update the name of the budget
+                        viewModel.setBudgetName(budgetId, it)
+                    }
+
+                    // update the action bar label
+                    (activity as? AppCompatActivity)?.supportActionBar?.title = newTitle
                 }
-
-                // update the action bar label
-                (activity as? AppCompatActivity)?.supportActionBar?.title = newTitle
             }
+        }
+
+
+        // Listen for when the user tries to click the delete budget button.
+        findPreference<Preference>(getString(R.string.preference_budget_delete_key))
+                ?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+
+            AlertDialog.Builder(context)
+                    .setTitle(getString(R.string.confirm_delete_budget))
+                    .setPositiveButton(getString(R.string.yes_delete_budget)
+                    ) { dialogInterface: DialogInterface?, which: Int ->
+                        // Delete budget
+
+                        if (viewModel.deleteBudget(budgetId)) {
+                            // Success!
+                            Toast.makeText(context, getString(R.string.delete_budget_success), Toast.LENGTH_LONG).show()
+
+                            // Close the fragment, since the corresponding budget no longer exists.
+                            onBackPressed()
+                        } else {
+                            // Failed to delete budget!
+                            Toast.makeText(context, getString(R.string.delete_budget_failure), Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    .setNegativeButton(getString(R.string.no_delete_budget), null)
+                    .show()
+
+            return@OnPreferenceClickListener true
         }
 
         return view

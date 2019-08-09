@@ -96,6 +96,19 @@ class BudgetRepository(private val budgetDirectory: File) {
         }
     }
 
+    /**
+     * Deletes a budget.
+     * @param budgetId The UUID of the budget to delete
+     * @return Whether deletion was successful
+     */
+    fun deleteBudget(budgetId: UUID) : Boolean {
+        // remove the budget from memory
+        _allBudgets.value?.remove(budgetId)
+        _allBudgets.notifyObservers()
+        // Delete the CSV file for the budget
+        return File(budgetDirectory, budgetId.toString()).delete()
+    }
+
     private fun saveAllBudgets() {
         _allBudgets.value?.forEach {
             val budget = it.value

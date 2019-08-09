@@ -1,17 +1,22 @@
 <resources>
+    <!-- Do not translate. -->
     <string name="app_name">Assidua</string>
 
-    <!-- Keys for shared preferencees (Deprecated) -->
+    <!-- Keys for shared preferences -->
+    <!-- Do not translate. -->
     <string name="preference_file_key">ai.chench.assidua.PREFERENCE_FILE_KEY</string>
     <string name="preference_budget_name_key">budget_name</string>
+    <string name="preference_budget_delete_key">budget_delete</string>
 
-    <!-- Name of file directory where budgets CSVs are stored. DO NOT CHANGE! -->
+    <!-- Name of file directory where budgets CSVs are stored. -->
+    <!-- Do not translate. -->
     <string name="budget_directory_location">budgets</string>
 
+    <!-- Deprecated keys. -->
+    <!-- Do not translate. -->
     <string name="balance_remaining_key">BALANCE_REMAINING</string>
     <string name="expenditures_key">EXPENDITURES</string>
     <string name="budgets_key">BUDGET</string>
-
 
 
     <!-- Displayed when creating a new budget -->
@@ -19,7 +24,7 @@
     <string name="new_budget_name">Budget Name</string>
     <string name="create_button_text">Create!</string>
 
-    <!-- Displayed on each display budget fragment -->
+    <!-- Displayed on each DisplayBudgetFragment -->
     <string name="error_not_a_number">Please enter a number.</string>
     <string name="error_number_too_big">Please enter a smaller number.</string>
 
@@ -43,5 +48,10 @@
 
     <string name="delete_budget">Delete budget</string>
     <string name="action_cannot_be_undone">This action cannot be undone!</string>
+    <string name="confirm_delete_budget">Delete this budget?</string>
+    <string name="yes_delete_budget">Delete Budget</string>
+    <string name="no_delete_budget">Cancel</string>
 
+    <string name="delete_budget_success">Budget deleted successfully.</string>
+    <string name="delete_budget_failure">Unable to delete budget.</string>
 </resources>
