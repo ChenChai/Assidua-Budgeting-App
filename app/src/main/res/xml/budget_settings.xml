@@ -4,7 +4,7 @@
 
     <EditTextPreference
         app:dialogTitle="@string/set_budget_name"
-        app:key="budget_name"
+        app:key="@string/preference_budget_name_key"
         app:title="@string/budget_name"
         app:useSimpleSummaryProvider="true" />
     <Preference

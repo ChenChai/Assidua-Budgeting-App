@@ -4,11 +4,13 @@ import ai.chench.assidua.data.Budget
 import ai.chench.assidua.data.ExpenditureViewModel
 import ai.chench.assidua.util.BackPressable
 import android.app.Activity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceFragmentCompat
@@ -44,7 +46,9 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
             onBackPressed()
         }
 
-        setupActionBar()
+
+        // set the preference to display the budget name.
+        preferenceManager.sharedPreferences.edit().putString(getString(R.string.preference_budget_name_key), budget?.name).apply()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,6 +59,7 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
         // Hide soft keyboard when settings opened
         (context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager)?.
                 hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+        setupActionBar()
 
         return view
     }
@@ -80,6 +85,28 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
             title = originalActionBarTitle
         }
     }
+
+    private val sharedPrefsListener = { sharedPrefs: SharedPreferences, key: String->
+        // Check if user just changed the title
+        if (key == getString(R.string.preference_budget_name_key)) {
+            val newTitle = sharedPrefs.getString(key, "")
+            Toast.makeText(context, "Changed budget_name to $newTitle", Toast.LENGTH_LONG).show()
+
+            (activity as? AppCompatActivity)?.supportActionBar?.title = newTitle
+
+        }
+    }
+
+    override fun onResume() {
+        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
+        super.onResume()
+    }
+
+    override fun onPause() {
+        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPrefsListener)
+        super.onPause()
+    }
+
 
     override fun onBackPressed(): Boolean {
         // Return action bar to its original state.
