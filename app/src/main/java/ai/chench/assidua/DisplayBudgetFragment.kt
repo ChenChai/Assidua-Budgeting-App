@@ -84,6 +84,42 @@ class DisplayBudgetFragment : Fragment() {
         }
     }
 
+    fun setBudgetId(budgetId: UUID) {
+        this.budgetId = budgetId
+        if (::viewModel.isInitialized) {
+            updateViews()
+        }
+    }
+
+    private fun updateViews() {
+        // Budget may be null if budget was just deleted. No big deal
+        budget = viewModel.getBudget(budgetId)
+        if (budget == null) { return }
+
+        Log.d(TAG, "Budget '${budget?.name}' just had its observer called! Balance: ${budget?.balance}")
+
+        adapter.setExpenditures(budget?.expenditures)
+
+        // Scroll to the top to see the most recently added transaction
+        expendituresRecyclerView.smoothScrollToPosition(
+                if (adapter.itemCount - 1 < 0) 0
+                else adapter.itemCount - 1
+        )
+
+        val balance = budget?.balance
+        activity?.runOnUiThread {
+            remainingMoneyTextView.setText(balance?.setScale(2)?.toPlainString()) // Set the number to always have 2 decimal places
+
+            if (balance != null && balance < BigDecimal(0)) {
+                // user has negative balance, set TextView to a certain color.
+                context?.resources?.let {remainingMoneyTextView.setTextColor(it.getColor(R.color.colorNegative) )}
+            } else {
+                // user is positive in balance! Set TextView to a certain color.
+                context?.resources?.let {remainingMoneyTextView.setTextColor(it.getColor(R.color.colorPositive) )}
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_display_budget, container, false)
@@ -99,35 +135,8 @@ class DisplayBudgetFragment : Fragment() {
         val budgets = viewModel.budgets
 
         budgets.observe(this, Observer {
-            // Budget may be null if budget was just deleted. No big deal
-            budget = viewModel.getBudget(budgetId)
-            if (budget == null) { return@Observer }
-
-            // TODO figure out if the budget should actually hold info on
-            //  balance, or if we should just recalculate it each time
-
-            Log.d(TAG, "Budget '${budget?.name}' just had its observer called! Balance: ${budget?.balance}")
-
-            adapter.setExpenditures(budget?.expenditures)
-
-            // Scroll to the top to see the most recently added transaction
-            expendituresRecyclerView.smoothScrollToPosition(
-                    if (adapter.itemCount - 1 < 0) 0
-                    else adapter.itemCount - 1
-            )
-
-            val balance = budget?.balance
-            activity?.runOnUiThread {
-                view.remainingMoneyTextView.setText(balance?.setScale(2)?.toPlainString()) // Set the number to always have 2 decimal places
-
-                if (balance != null && balance < BigDecimal(0)) {
-                    // user has negative balance, set TextView to a certain color.
-                    context?.resources?.let {view.remainingMoneyTextView.setTextColor(it.getColor(R.color.colorNegative) )}
-                } else {
-                    // user is positive in balance! Set TextView to a certain color.
-                    context?.resources?.let {view.remainingMoneyTextView.setTextColor(it.getColor(R.color.colorPositive) )}
-                }
-            }
+            // TODO figure out how to only observe one budget instead of literally every single one
+            updateViews()
         })
 
         view.addExpenditureButton.setOnClickListener(clickListener)

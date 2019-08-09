@@ -20,6 +20,9 @@ import androidx.lifecycle.Observer
 
 class MainActivity : AppCompatActivity() {
 
+    // Number of budgets last observed
+    var previousBudgetCount: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,10 +41,32 @@ class MainActivity : AppCompatActivity() {
         viewModel.budgets.observe(this, Observer { budgetMap: Map<UUID, Budget> ->
             Log.d(TAG, "new budget size: " + budgetMap.size + " Notifying adapter!")
 
+            // List of budgets to display, in the correct displaying order as well.
             val budgetList = ArrayList(budgetMap.values)
 
+            // Allow the adapter to create any necessary budgets
             adapter.setBudgets(budgetList)
             adapter.notifyDataSetChanged()
+
+            // If the number of budgets changed, that means that a budget was added or deleted.
+            // We now need to refresh all the budgets.
+            if (previousBudgetCount >= 0 && budgetList.size != previousBudgetCount) {
+
+                // loop from zero to budgetList.size - 1
+                for (i in 0 until budgetList.size) {
+                    val fragment = adapter.getItem(i)
+
+                    // Update the each fragment to display the correct budget after changes
+                    if (fragment is DisplayBudgetFragment) {
+                        fragment.setBudgetId(budgetList[i].id)
+                    }
+                }
+            }
+
+
+
+            // Update the number of budgets we count.
+            previousBudgetCount = budgetList.size
         })
 
         viewPager.setAdapter(adapter)

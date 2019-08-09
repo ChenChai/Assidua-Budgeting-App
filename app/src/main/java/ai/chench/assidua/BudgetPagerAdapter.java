@@ -77,13 +77,17 @@ public class BudgetPagerAdapter extends FragmentStatePagerAdapter {
         // and this fragment needs to be replaced with a DisplayBudgetFragment, so return
         // POSITION_NONE to force recreate.
         if (object instanceof CreateBudgetFragment) {
+            Log.d(TAG, "getItemPosition: Recreating a CreateBudgetFragment");
             return POSITION_NONE;
         } else if (object instanceof DisplayBudgetFragment) {
-            // If a fragment displaying a budget no longer has a budget that
-            // is valid, destroy and recreate as well.
-            if (((DisplayBudgetFragment) object).hasValidBudget()) {
-                return POSITION_NONE;
-            }
+//            // If a fragment displaying a budget no longer has a budget that
+//            // is valid, destroy and recreate as well.
+//            if (((DisplayBudgetFragment) object).hasValidBudget()) {
+//                Log.d(TAG, "getItemPosition: Recreating a DisplayBudgetFragment");
+//                return POSITION_NONE;
+//            } else {
+//                Log.d(TAG, "getItemPosition: Not recreating a DisplayBudgetFragment");
+//            }
         }
 
         // Otherwise, use the parent method
