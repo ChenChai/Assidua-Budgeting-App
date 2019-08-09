@@ -33,6 +33,13 @@ class DisplayBudgetFragment : Fragment() {
     private var budget: Budget? = null
     private lateinit var budgetId: UUID  // Id of the budget this fragment is displaying
 
+    /**
+     * @return Whether this fragment is currently displaying an actual budget or not.
+     */
+    fun hasValidBudget(): Boolean =
+        viewModel.getBudget(budgetId) == null
+
+
     private val clickListener = View.OnClickListener { view ->
         when (view) {
             addExpenditureButton -> {

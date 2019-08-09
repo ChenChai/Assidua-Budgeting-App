@@ -78,9 +78,15 @@ public class BudgetPagerAdapter extends FragmentStatePagerAdapter {
         // POSITION_NONE to force recreate.
         if (object instanceof CreateBudgetFragment) {
             return POSITION_NONE;
-        } else {
-            // Otherwise, use the parent method
-            return super.getItemPosition(object);
+        } else if (object instanceof DisplayBudgetFragment) {
+            // If a fragment displaying a budget no longer has a budget that
+            // is valid, destroy and recreate as well.
+            if (((DisplayBudgetFragment) object).hasValidBudget()) {
+                return POSITION_NONE;
+            }
         }
+
+        // Otherwise, use the parent method
+        return super.getItemPosition(object);
     }
 }
