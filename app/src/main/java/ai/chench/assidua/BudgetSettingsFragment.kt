@@ -6,6 +6,7 @@ import ai.chench.assidua.util.BackPressable
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import java.lang.StringBuilder
 import java.util.*
@@ -20,16 +22,20 @@ import java.util.*
 class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
     companion object {
         const val ARGUMENT_BUDGET_UUID = "ARGUMENT_BUDGET_UUID"
+        const val TAG = "BudgetSettingsFragment"
     }
 
     var budget: Budget? = null
 
     private lateinit var budgetId: UUID
     private lateinit var viewModel: ExpenditureViewModel
+    private lateinit var sharedPrefsListener: SharedPreferences.OnSharedPreferenceChangeListener
+
 
     private var originalActionBarTitle: CharSequence? = ""
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        Log.d(TAG, "onCreatePreferences")
         setPreferencesFromResource(R.xml.budget_settings, rootKey)
         budgetId = UUID.fromString(arguments!!.getString(ARGUMENT_BUDGET_UUID))
 
@@ -46,12 +52,13 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
             onBackPressed()
         }
 
-
         // set the preference to display the budget name.
-        preferenceManager.sharedPreferences.edit().putString(getString(R.string.preference_budget_name_key), budget?.name).apply()
+        findPreference<EditTextPreference>(getString(R.string.preference_budget_name_key))?.text = budget?.name
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.d(TAG, "onCreateView")
+
         val view = super.onCreateView(inflater, container, savedInstanceState)
         // Set background color to white
         view?.setBackgroundColor(resources.getColor(android.R.color.white))
@@ -60,6 +67,18 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
         (context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager)?.
                 hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
         setupActionBar()
+
+
+        // Define it here as otherwise, getString() may fail as it requires a context.
+        sharedPrefsListener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPrefs: SharedPreferences, key: String->
+            // Check if user just changed the title
+            if (key == getString(R.string.preference_budget_name_key)) {
+                val newTitle = sharedPrefs.getString(key, "")
+                Toast.makeText(context, "Changed budget_name to $newTitle", Toast.LENGTH_LONG).show()
+
+                (activity as? AppCompatActivity)?.supportActionBar?.title = newTitle
+            }
+        }
 
         return view
     }
@@ -86,23 +105,17 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
         }
     }
 
-    private val sharedPrefsListener = { sharedPrefs: SharedPreferences, key: String->
-        // Check if user just changed the title
-        if (key == getString(R.string.preference_budget_name_key)) {
-            val newTitle = sharedPrefs.getString(key, "")
-            Toast.makeText(context, "Changed budget_name to $newTitle", Toast.LENGTH_LONG).show()
-
-            (activity as? AppCompatActivity)?.supportActionBar?.title = newTitle
-
-        }
-    }
 
     override fun onResume() {
+        Log.d(TAG, "onResume")
+
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
         super.onResume()
     }
 
     override fun onPause() {
+        Log.d(TAG, "onPause")
+
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPrefsListener)
         super.onPause()
     }
