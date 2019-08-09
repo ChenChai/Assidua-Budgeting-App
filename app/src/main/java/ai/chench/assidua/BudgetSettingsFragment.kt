@@ -74,8 +74,13 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
             // Check if user just changed the title
             if (key == getString(R.string.preference_budget_name_key)) {
                 val newTitle = sharedPrefs.getString(key, "")
-                Toast.makeText(context, "Changed budget_name to $newTitle", Toast.LENGTH_LONG).show()
 
+                newTitle?.let {
+                    // update the name of the budget
+                    viewModel.setBudgetName(budgetId, it)
+                }
+
+                // update the action bar label
                 (activity as? AppCompatActivity)?.supportActionBar?.title = newTitle
             }
         }
@@ -125,10 +130,14 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
         // Return action bar to its original state.
         resetActionBar()
 
-        // TODO save information? Or we could save it whenever the user does anything at all
+        // Record whether the fragment was resumed before we call remove
+        val wasResumed = isResumed
+
+        // Call remove to remove the fragment. Fragment will now be paused.
         fragmentManager?.beginTransaction()?.remove(this)?.commitAllowingStateLoss()
 
-        // We handled the click for the calling class, so return true
-        return true
+        // We handled the click for the calling class if we started out resumed.
+        // If we were paused already, just let the parent activity handle the back.
+        return wasResumed
     }
 }

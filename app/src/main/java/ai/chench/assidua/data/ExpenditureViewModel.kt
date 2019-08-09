@@ -40,6 +40,10 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
         return repository.getBudgetFromId(budgetId)
     }
 
+    fun setBudgetName(budgetId: UUID, title: String) {
+        repository.setBudgetName(budgetId, title)
+    }
+
     /**
      * @param expenditure The expenditure to delete
      * @param budget The budget from which to delete the expenditure.

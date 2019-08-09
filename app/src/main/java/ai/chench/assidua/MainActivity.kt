@@ -54,11 +54,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        // Let the settings fragment be closed upon back press if it is open.
         val settingsFragment = supportFragmentManager.findFragmentById(R.id.settings)
-        val pressHandled = (settingsFragment as? BackPressable)?.onBackPressed()
+
+        // Assume the settings fragment didn't handle the press
+        // Do this since pressHandled might otherwise end up as null
+        var pressHandled = false
+
+        // Send back press to settings fragment
+        (settingsFragment as? BackPressable)?.onBackPressed()?.let {
+            pressHandled = it
+        }
 
         // If the fragment didn't handle the press, we'll handle it normally instead.
-        if (pressHandled == false) {
+        if (!pressHandled) {
             super.onBackPressed()
         }
     }

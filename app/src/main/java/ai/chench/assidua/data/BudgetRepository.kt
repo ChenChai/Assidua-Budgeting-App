@@ -55,14 +55,22 @@ class BudgetRepository(private val budgetDirectory: File) {
             it.expenditures.add(expenditure)
 
             saveBudget(budget)
+            _allBudgets.notifyObservers()
         }
-        _allBudgets.notifyObservers()
     }
 
     fun addBudget(budget: Budget) {
         _allBudgets.value?.put(budget.id, budget)
         saveBudget(budget)
         _allBudgets.notifyObservers()
+    }
+
+    fun setBudgetName(budgetId: UUID, name: String) {
+        _allBudgets.value?.get(budgetId)?.let { budget ->
+            budget.name = name
+            saveBudget(budget)
+            _allBudgets.notifyObservers()
+        }
     }
 
     fun deleteLastExpenditure(budgetId: UUID) {
