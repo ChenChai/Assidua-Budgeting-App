@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
 <androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        tools:context=".MainActivity">
+-->
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/transparent"
+    tools:context=".MainActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <TextView
             android:id="@+id/remainingMoneyTextView"
@@ -77,7 +80,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/expendituresRecyclerView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
@@ -98,8 +101,8 @@
             android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="@string/add_expenditure_name"
-            android:inputType="textShortMessage"
             android:imeOptions="actionGo"
+            android:inputType="textShortMessage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/expenditureCostEditText" />
 
@@ -143,4 +146,6 @@
             app:srcCompat="@drawable/ic_settings" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+<!--
 </androidx.core.widget.NestedScrollView>
+-->
