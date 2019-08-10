@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditTextPreference
+        android:icon="@drawable/ic_edit"
         app:dialogTitle="@string/set_budget_name"
         app:key="@string/preference_budget_name_key"
         app:title="@string/budget_name"
@@ -14,6 +15,7 @@
         android:icon="@drawable/ic_arrow_right"
         app:title="@string/move_right" />
     <Preference
+        android:icon="@drawable/ic_delete"
         app:title="@string/delete_budget"
         app:key="@string/preference_budget_delete_key"
         app:summary="@string/action_cannot_be_undone" />
