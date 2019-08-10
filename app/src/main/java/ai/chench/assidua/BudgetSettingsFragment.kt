@@ -154,7 +154,7 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
                         intent.type = "text/plain"
 
                         val baos = ByteArrayOutputStream()
-                        CsvBudgetIoUtil.saveBudget(budget, baos)
+                        CsvBudgetIoUtil.saveBudget(budget, baos, false)
 
                         val csv = String(baos.toByteArray(), Charset.defaultCharset())
 
@@ -175,7 +175,7 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
 
                 if (outputStream != null) {
                     // write to that output stream!
-                    CsvBudgetIoUtil.saveBudget(budget, outputStream)
+                    CsvBudgetIoUtil.saveBudget(budget, outputStream, false)
                 } else {
                     Toast.makeText(context, getString(R.string.export_failed), Toast.LENGTH_LONG).show()
                 }

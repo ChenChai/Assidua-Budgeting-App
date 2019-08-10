@@ -32,19 +32,27 @@ public class CsvBudgetIoUtil {
 
     private static final String TAG = "CsvBudgetIoUtil";
 
-    // Variables for determining order of CSV inputs:
-    private static final int BUDGET_UUID = 0;
-    private static final int BUDGET_NAME = 1;
-    private static final int BUDGET_BALANCE = 2;
+    // Variables for determining order of CSV columns:
+    private static final int BUDGET_NAME = 0;
+    private static final int BUDGET_BALANCE = 1;
+    private static final int BUDGET_UUID = 2;
 
-    private static final int EXPENDITURE_UUID = 0;
-    private static final int EXPENDITURE_NAME = 1;
-    private static final int EXPENDITURE_VALUE = 2;
-    private static final int EXPENDITURE_DATE = 3;
+    private static final int EXPENDITURE_NAME = 0;
+    private static final int EXPENDITURE_VALUE = 1;
+    private static final int EXPENDITURE_DATE = 2;
+    private static final int EXPENDITURE_UUID = 3;
 
-    // Formatting string: Fill with expenditure UUID, expenditure name, expenditure date, and expenditure balance
 
+    /**
+     * Read a budget from an input stream in CSV format.
+     * @param inputStream The stream to read from
+     * @return Parsed budget
+     */
     public static Budget parseBudget(InputStream inputStream) {
+        if (inputStream == null) {
+            return null;
+        }
+
         String budgetName;
         String budgetBalance;
         Budget budget;
@@ -82,6 +90,21 @@ public class CsvBudgetIoUtil {
     }
 
     public static boolean saveBudget(Budget budget, OutputStream outputStream) {
+        return saveBudget(budget, outputStream, true);
+    }
+
+    /**
+     * Writes a budget in CSV format to an output stream
+     * @param budget The budget to write
+     * @param outputStream Output stream to write to
+     * @param writeUUIDs Whether to save UUIDs as well
+     * @return Whether write was successful
+     */
+    public static boolean saveBudget(Budget budget, OutputStream outputStream, boolean writeUUIDs) {
+        if (outputStream == null || budget == null) {
+            return false;
+        }
+
         Log.d(TAG, "Saving budget " + budget.getName());
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream), 1000);
@@ -89,7 +112,12 @@ public class CsvBudgetIoUtil {
 
             // Write the budget as the first line of the csv
             String[] budgetRecord = new String[3];
-            budgetRecord[BUDGET_UUID] = budget.getId().toString();
+            if (writeUUIDs) {
+                budgetRecord[BUDGET_UUID] = budget.getId().toString();
+            } else {
+                budgetRecord[BUDGET_UUID] = null;
+            }
+
             budgetRecord[BUDGET_BALANCE] = budget.getBalance().toString();
             budgetRecord[BUDGET_NAME] = budget.getName();
 
@@ -98,9 +126,13 @@ public class CsvBudgetIoUtil {
             String[] expenditureRecord = new String[4];
             // write each expenditure as the next
             for (Expenditure expenditure : budget.getExpenditures()) {
+                if (writeUUIDs) {
+                    expenditureRecord[EXPENDITURE_UUID] = expenditure.getId().toString();
+                } else {
+                    expenditureRecord[EXPENDITURE_UUID] = null;
+                }
 
                 expenditureRecord[EXPENDITURE_NAME] = expenditure.getName();
-                expenditureRecord[EXPENDITURE_UUID] = expenditure.getId().toString();
                 expenditureRecord[EXPENDITURE_VALUE] = expenditure.getValue().toString();
                 expenditureRecord[EXPENDITURE_DATE] = expenditure.getDate().toString();
 

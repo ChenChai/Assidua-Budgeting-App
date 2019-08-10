@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.math.BigDecimal
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -34,7 +35,7 @@ class BudgetRepository(private val budgetDirectory: File) {
         // Read all the budgets from the directory
         budgetDirectory.listFiles().forEach { file ->
             Log.d(TAG, "Attempting to parse a budget from: $file")
-            // Attempt to parse the budget
+            // Attempt to parse the budget (will return null if failed to parse)
             CsvBudgetIoUtil.parseBudget(FileInputStream(file))?.let {
 
                 // If successful, add the budget to the map
@@ -64,6 +65,7 @@ class BudgetRepository(private val budgetDirectory: File) {
     fun addBudget(budget: Budget) {
         _allBudgets.value?.put(budget.id, budget)
         saveBudget(budget)
+
         _allBudgets.notifyObservers()
     }
 
