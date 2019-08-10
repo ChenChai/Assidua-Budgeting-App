@@ -67,7 +67,6 @@ class DisplayBudgetFragment : Fragment() {
                 }
 
                 var name = expenditureNameEditText.text.toString().trim()
-                name = if (name == "") getString(R.string.untitled_expenditure) else name
 
                 budget?.let {
                     viewModel.addExpenditure(
@@ -79,6 +78,14 @@ class DisplayBudgetFragment : Fragment() {
             }
 
             undoExpenditureButton -> {
+                // Try to fill in the previous editTexts with the last expenditure's info
+                budget?.expenditures?.let {
+                    if (it.isNotEmpty()) {
+                        val expenditure = it.get(it.size - 1)
+                        expenditureNameEditText.setText(expenditure.name)
+                        expenditureCostEditText.setText(expenditure.value.toString())
+                    }
+                }
                 budget?.let { viewModel.deleteLastExpenditure(it) }
             }
         }
