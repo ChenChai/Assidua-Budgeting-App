@@ -50,7 +50,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
             // Loop through budgets!
             for ((id, budget) in budgetMap) {
                 val index: Int = budgetOrder.indexOf(id)
-                Log.d(TAG, "Index of ${budget.name} is $index")
+                Log.d("CHEN", "Index of ${budget.name} is $index")
                 if (index >= 0) {
                     budgetList[index] = budget
                 } else {
@@ -84,6 +84,8 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
 
     fun addBudget(budget: Budget) {
         repository.addBudget(budget)
+        budgetOrder.add(budget.id)
+        saveBudgetOrder()
     }
 
     fun getBudget(budgetId: UUID): Budget? {
@@ -100,6 +102,8 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
      * @return whether the deletion was successful.
      */
     fun deleteBudget(budgetId: UUID): Boolean {
+        budgetOrder.remove(budgetId)
+        saveBudgetOrder()
         return repository.deleteBudget(budgetId)
     }
 
