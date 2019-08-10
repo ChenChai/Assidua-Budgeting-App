@@ -21,55 +21,87 @@ import androidx.lifecycle.Observer
 class MainActivity : AppCompatActivity() {
 
     // Number of budgets last observed
-    var previousBudgetCount: Int = -1
+    var previousBudgetOrder: MutableList<String> = mutableListOf()
+
+
+    lateinit var tabLayout: TabLayout
+    lateinit var viewPager: ViewPager
+    lateinit var viewModel: ExpenditureViewModel
+
+    lateinit var adapter: BudgetPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
-        val viewPager = findViewById<ViewPager>(R.id.viewPager)
-        val viewModel = ViewModelProviders.of(this).get(ExpenditureViewModel::class.java)
+        tabLayout = findViewById<TabLayout>(R.id.tabLayout)
+        viewPager = findViewById<ViewPager>(R.id.viewPager)
+        viewModel = ViewModelProviders.of(this).get(ExpenditureViewModel::class.java)
 
-        val adapter = BudgetPagerAdapter(
+        adapter = BudgetPagerAdapter(
                 supportFragmentManager,
                 //FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
                 // causes a crash when replacing fragments due to lifecycle issues
                 FragmentStatePagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT,
                 ArrayList())
 
+
         viewModel.budgets.observe(this, Observer { budgetList:List<Budget> ->
+
             // List of budgets to display, in the correct displaying order as well.
-
             Log.d(TAG, "Budget List: $budgetList")
-            // If the number of budgets changed, that means that a budget was added or deleted.
-            // We now need to refresh all the budgets.
-            // Will refresh at the start, since previousBudgetCount starts at -1.
-            if (budgetList.size != previousBudgetCount) {
-//                Log.d(TAG, "new budget count: " + budgetMap.size + ", Old budget count: " + previousBudgetCount)
 
-                // Allow the adapter to create any necessary budgets
-                adapter.setBudgets(budgetList)
-                adapter.notifyDataSetChanged()
+            var budgetOrderChanged = false
 
-                // loop from zero to budgetList.size - 1
-                for (i in 0 until budgetList.size) {
-                    val fragment = adapter.getItem(i)
+            // Loop through each of the budgets' UUIDs and compare them to the ones we have stored.
+            // If any of them have changed, then we need to update the UI. Otherwise, we can actually
+            // skip updating it, as each fragment will take care of updating of individual expenditures
 
-                    // Update the each fragment to display the correct budget after changes
-                    if (fragment is DisplayBudgetFragment) {
-                        fragment.setBudgetId(budgetList[i].id)
+            // Check if previous budget order is same or different size
+            if (previousBudgetOrder.size != budgetList.size) {
+                budgetOrderChanged = true
+            } else {
+                for (i in 0 until budgetList.size - 1) {
+                    if (previousBudgetOrder.size - 1 >= i
+                            && previousBudgetOrder[i] != budgetList[i].id.toString()) {
+                        budgetOrderChanged = true
+                        break
                     }
                 }
             }
 
-            // Update the number of budgets we count.
-            previousBudgetCount = budgetList.size
+            if (budgetOrderChanged) {
+                refreshUI(budgetList)
+            }
+
+            // Update the last-seen budgets
+            previousBudgetOrder.clear()
+            for (budget in budgetList) {
+                previousBudgetOrder.add(budget.id.toString())
+            }
         })
 
         viewPager.setAdapter(adapter)
         tabLayout.setupWithViewPager(viewPager)
 
+    }
+
+    private fun refreshUI(budgetList: List<Budget>) {
+        //                Log.d(TAG, "new budget count: " + budgetMap.size + ", Old budget count: " + previousBudgetCount)
+
+        // Allow the adapter to create any necessary budgets
+        adapter.setBudgets(budgetList)
+        adapter.notifyDataSetChanged()
+
+        // loop from zero to budgetList.size - 1
+        for (i in 0 until budgetList.size) {
+            val fragment = adapter.getItem(i)
+
+            // Update the each fragment to display the correct budget after changes
+            if (fragment is DisplayBudgetFragment) {
+                fragment.setBudgetId(budgetList[i].id)
+            }
+        }
     }
 
     companion object {
