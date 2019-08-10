@@ -42,31 +42,31 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
         repository = BudgetRepository(File(application.filesDir, application.getString(R.string.budget_directory_location)))
         _budgets = repository.allBudgets
 
-        // Transform map livedata to a non-mutable list in the correct budget order!
+        // Transform budget map livedata to a non-mutable list in the correct budget order!
         budgets = Transformations.switchMap(_budgets) { budgetMap: MutableMap<UUID, Budget> ->
             val budgetList: MutableList<Budget?> = MutableList(budgetMap.size) {null}
 
-            Log.e("CHEN", "-------------Looping through budget map:")
+//            Log.e("CHEN", "-------------Looping through budget map:")
             // Loop through budgets!
             for ((id, budget) in budgetMap) {
                 val index: Int = budgetOrder.indexOf(id)
-                Log.d("CHEN", "Index of ${budget.name} is $index")
+//                Log.d("CHEN", "Index of ${budget.name} is $index")
                 if (index >= 0) {
                     budgetList[index] = budget
                 } else {
                     // It doesn't exist in the order list yet, add it to the end.
                     budgetOrder.add(id)
                     budgetList.add(budget)
-                    Log.e("CHEN", "Budget does not yet exist in budget order, adding ${budget.name}, new budget order size is ${budgetOrder.size}")
+//                    Log.e("CHEN", "Budget does not yet exist in budget order, adding ${budget.name}, new budget order size is ${budgetOrder.size}")
                     saveBudgetOrder()
                 }
             }
 
-            Log.e("CHEN", "Looping through budget list for null errors. BudgetList is: $budgetList, budget order is: $budgetOrder")
+//            Log.e("CHEN", "Looping through budget list for null errors. BudgetList is: $budgetList, budget order is: $budgetOrder")
             // Loop downwards, removing any
             for (i in budgetList.size - 1 downTo 0) {
                 if (budgetList[i] == null) {
-                    Log.e("CHEN", "Budget list at $i is null, removing!")
+//                    Log.e("CHEN", "Budget list at $i is null, removing!")
                     // Budget no longer exists; remove!
                     budgetOrder.removeAt(i)
                     budgetList.removeAt(i)
@@ -116,15 +116,20 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun moveBudgetLeft(budgetId: UUID) {
-        Log.d("CHEN", "Trying Moving budget left! ")
+//        Log.d("CHEN", "Trying Moving budget left! ")
 
         budgetOrder.indexOf(budgetId).let {index ->
-            Log.d("CHEN", "Index was $index")
+//            Log.d("CHEN", "Index was $index")
+
+            if (index < 0) {
+                Log.e(TAG, "Just tried to move budget id $budgetId to the right, but budget could not be found in budget order list!")
+                return@let
+            }
 
             if (index >= 1) {
                 // if index isn't leftmost element
                 Collections.swap(budgetOrder, index, index - 1)
-                Log.d("CHEN", "New index should be ${index - 1}")
+//                Log.d("CHEN", "New index should be ${index - 1}")
 
                 saveBudgetOrder()
                 repository.notifyBudgetObservers()
@@ -133,15 +138,20 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun moveBudgetRight(budgetId: UUID) {
-        Log.d("CHEN", "Trying Moving budget right! ")
+//        Log.d("CHEN", "Trying Moving budget right! ")
         budgetOrder.let {
             val index = it.indexOf(budgetId)
-            Log.d("CHEN", "Index was $index")
-            // make sure index isn't last element!
+
+            if (index < 0) {
+                Log.e(TAG, "Just tried to move budget id $budgetId to the right, but budget could not be found in budget order list!")
+                return@let
+            }
+//            Log.d("CHEN", "Index was $index")
+            // make sure index isn't last element, and also a valid element
             if (index < it.size - 1) {
                 // if index isn't leftmost element
                 Collections.swap(budgetOrder, index, index + 1)
-                Log.d("CHEN", "New index should be ${index + 1}")
+//                Log.d("CHEN", "New index should be ${index + 1}")
                 saveBudgetOrder()
                 repository.notifyBudgetObservers()
             }
