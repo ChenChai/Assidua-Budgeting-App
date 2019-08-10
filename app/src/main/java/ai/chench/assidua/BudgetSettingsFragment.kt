@@ -147,7 +147,7 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
         if (context != null) {
             AlertDialog.Builder(context)
                     .setTitle("Export as Plain Text?")
-                    .setMessage("CSV export doesn't work on older OS versions. Export as text CSV instead?")
+                    .setMessage("CSV export doesn't work on older Android versions. Export as text CSV instead?")
                     .setPositiveButton("Yes") { dialogInterface, i ->
 
                         val intent = Intent(Intent.ACTION_SEND)
