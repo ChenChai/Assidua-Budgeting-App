@@ -113,8 +113,8 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
                 ?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
             AlertDialog.Builder(context)
-                    .setTitle(String.format(getString(R.string.confirm_delete_budget), if (budget?.name != null) budget?.name else ""))
-                    .setPositiveButton(getString(R.string.yes_delete_budget)
+                    .setTitle(String.format(getString(R.string.delete_budget_confirm), if (budget?.name != null) budget?.name else ""))
+                    .setPositiveButton(getString(R.string.delete_budget_yes)
                     ) { dialogInterface: DialogInterface?, which: Int ->
                         // Delete budget
 
@@ -129,7 +129,7 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
                             Toast.makeText(context, getString(R.string.delete_budget_failure), Toast.LENGTH_LONG).show()
                         }
                     }
-                    .setNegativeButton(getString(R.string.no_delete_budget), null)
+                    .setNegativeButton(getString(R.string.delete_budget_cancel), null)
                     .show()
 
             return@OnPreferenceClickListener true
@@ -146,9 +146,9 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
     private fun exportAsPlainTextCsv() {
         if (context != null) {
             AlertDialog.Builder(context)
-                    .setTitle("Export as Plain Text?")
-                    .setMessage("CSV export doesn't work on older Android versions. Export as text CSV instead?")
-                    .setPositiveButton("Yes") { dialogInterface, i ->
+                    .setTitle(getString(R.string.export_plaintext_title))
+                    .setMessage(getString(R.string.export_plaintext_explanation))
+                    .setPositiveButton(getString(R.string.export_plaintext_yes)) { dialogInterface, i ->
 
                         val intent = Intent(Intent.ACTION_SEND)
                         intent.type = "text/plain"
@@ -161,7 +161,7 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
                         intent.putExtra(Intent.EXTRA_TEXT, csv)
                         startActivityForResult(intent, REQUEST_SAVE_BUDGET_TEXT)
                     }
-                    .setNegativeButton("Cancel", null)
+                    .setNegativeButton(getString(R.string.export_plaintext_cancel), null)
                     .show()
         }
     }

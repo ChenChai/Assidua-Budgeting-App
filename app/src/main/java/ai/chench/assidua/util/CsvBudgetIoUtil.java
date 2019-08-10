@@ -77,7 +77,6 @@ public class CsvBudgetIoUtil {
                         budgetId,
                         UUID.fromString(expenditureRecord[EXPENDITURE_UUID])
                 ));
-                Log.d(TAG, "Added Expenditure number " + expenditures.size());
             }
 
             budget = new Budget(budgetName, new BigDecimal(budgetBalance), expenditures, budgetId);

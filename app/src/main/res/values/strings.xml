@@ -46,14 +46,20 @@
 
     <string name="move_left">Move Left</string>
     <string name="move_right">Move Right</string>
+
+
     <string name="export_csv">Export CSV</string>
     <string name="export_failed">Failed to export.</string>
+    <string name="export_plaintext_title">Export as Plain Text?</string>
+    <string name="export_plaintext_explanation">CSV export doesn\'t work on older Android versions. Export as text CSV instead?</string>
+    <string name="export_plaintext_yes">Yes</string>
+    <string name="export_plaintext_cancel">Cancel</string>
 
     <string name="delete_budget">Delete budget</string>
-    <string name="action_cannot_be_undone">This action cannot be undone!</string>
-    <string name="confirm_delete_budget">Delete budget %s?</string>
-    <string name="yes_delete_budget">Delete Budget</string>
-    <string name="no_delete_budget">Cancel</string>
+    <string name="delete_budget_action_cannot_be_undone">This action cannot be undone!</string>
+    <string name="delete_budget_confirm">Delete budget %s?</string>
+    <string name="delete_budget_yes">Delete Budget</string>
+    <string name="delete_budget_cancel">Cancel</string>
 
     <string name="delete_budget_success">Budget deleted successfully.</string>
     <string name="delete_budget_failure">Unable to delete budget.</string>

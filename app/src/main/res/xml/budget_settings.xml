@@ -24,6 +24,6 @@
         android:icon="@drawable/ic_delete"
         app:title="@string/delete_budget"
         app:key="@string/preference_budget_delete_key"
-        app:summary="@string/action_cannot_be_undone" />
+        app:summary="@string/delete_budget_action_cannot_be_undone" />
 
 </PreferenceScreen>
