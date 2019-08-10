@@ -84,8 +84,13 @@ class DisplayBudgetFragment : Fragment() {
         }
     }
 
-    fun setBudgetId(budgetId: UUID) {
-        this.budgetId = budgetId
+    fun setBudgetId(newId: UUID) {
+        if (::budgetId.isInitialized) {
+//            Log.d(TAG, "Setting budget id from $budgetId to $newId")
+        } else {
+//            Log.d(TAG, "setBudgetId called with $newId!! original budget ID was not initialized.")
+        }
+        this.budgetId = newId
         if (::viewModel.isInitialized) {
             updateViews()
         }
@@ -96,7 +101,7 @@ class DisplayBudgetFragment : Fragment() {
         budget = viewModel.getBudget(budgetId)
         if (budget == null) { return }
 
-        Log.d(TAG, "Budget '${budget?.name}' just had its observer called! Balance: ${budget?.balance}")
+//        Log.d(TAG, "Budget '${budget?.name}' just had its observer called! Balance: ${budget?.balance}")
 
         adapter.setExpenditures(budget?.expenditures)
 
@@ -118,6 +123,10 @@ class DisplayBudgetFragment : Fragment() {
                 context?.resources?.let {remainingMoneyTextView.setTextColor(it.getColor(R.color.colorPositive) )}
             }
         }
+    }
+
+    private fun getUpdatedBudgetID(): UUID{
+        return budgetId
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -159,9 +168,9 @@ class DisplayBudgetFragment : Fragment() {
             val settingsFragment = BudgetSettingsFragment()
 
             // Put UUID as argument to the fragment
-            val args = Bundle().apply {
-                putString(BudgetSettingsFragment.ARGUMENT_BUDGET_UUID, budgetId.toString())
-            }
+            val args = Bundle()
+//            Log.d(TAG, "Launching settings fragment with budget id ${getUpdatedBudgetID()}")
+            args.putString(BudgetSettingsFragment.ARGUMENT_BUDGET_UUID, getUpdatedBudgetID().toString())
 
             settingsFragment.arguments = args
 

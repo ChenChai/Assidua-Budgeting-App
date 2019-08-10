@@ -73,6 +73,13 @@ public class BudgetPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     // Called when ViewPager checking to see if it needs to destroy and recreate a fragment
     public int getItemPosition(@NonNull Object object) {
+
+        // Refresh every single fragment completely each time
+        // notifyDataSetChanged() is called.
+
+        // Shouldn't be too big of an issue, as it's only called when budgets are added or deleted.
+        // TODO figure out a more elegant solution
+        if (true) { return POSITION_NONE; }
         // Budget ID is being reset individually for each fragment that needs to be updated;
         // no need to recreate a whole DisplayBudgetFragment any more
 
@@ -80,7 +87,6 @@ public class BudgetPagerAdapter extends FragmentStatePagerAdapter {
         // and this fragment needs to be replaced with a DisplayBudgetFragment, so return
         // POSITION_NONE to force recreate.
         if (object instanceof CreateBudgetFragment) {
-            Log.d(TAG, "getItemPosition: Recreating a CreateBudgetFragment");
             return POSITION_NONE;
         } else if (object instanceof DisplayBudgetFragment) {
 //            // If a fragment displaying a budget no longer has a budget that

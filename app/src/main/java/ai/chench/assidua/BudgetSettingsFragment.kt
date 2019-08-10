@@ -37,7 +37,6 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
     private var originalActionBarTitle: CharSequence? = ""
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        Log.d(TAG, "onCreatePreferences")
         setPreferencesFromResource(R.xml.budget_settings, rootKey)
         budgetId = UUID.fromString(arguments!!.getString(ARGUMENT_BUDGET_UUID))
 
@@ -50,16 +49,12 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
 
         budget = viewModel.getBudget(budgetId)
 
-        if (budget == null) {
-            onBackPressed()
-        }
-
         // set the preference to display the budget name.
         findPreference<EditTextPreference>(getString(R.string.preference_budget_name_key))?.text = budget?.name
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d(TAG, "onCreateView")
+//        Log.d(TAG, "onCreateView")
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
         // Set background color to white
@@ -119,6 +114,11 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
             return@OnPreferenceClickListener true
         }
 
+        if (budget == null) {
+            Log.e(TAG, "Could not find budget associated with budget ID $budgetId")
+            onBackPressed()
+        }
+
         return view
     }
 
@@ -146,14 +146,14 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
 
 
     override fun onResume() {
-        Log.d(TAG, "onResume")
+//        Log.d(TAG, "onResume")
 
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPrefsListener)
         super.onResume()
     }
 
     override fun onPause() {
-        Log.d(TAG, "onPause")
+//        Log.d(TAG, "onPause")
 
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPrefsListener)
         super.onPause()

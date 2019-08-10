@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.io.File
+import java.math.BigDecimal
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -102,6 +103,8 @@ class BudgetRepository(private val budgetDirectory: File) {
      * @return Whether deletion was successful
      */
     fun deleteBudget(budgetId: UUID) : Boolean {
+        Log.d(TAG, "Deleting budget with ID $budgetId")
+
         // remove the budget from memory
         _allBudgets.value?.remove(budgetId)
         _allBudgets.notifyObservers()

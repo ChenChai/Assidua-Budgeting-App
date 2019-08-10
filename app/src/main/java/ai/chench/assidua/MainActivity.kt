@@ -39,18 +39,18 @@ class MainActivity : AppCompatActivity() {
                 ArrayList())
 
         viewModel.budgets.observe(this, Observer { budgetMap: Map<UUID, Budget> ->
-            Log.d(TAG, "new budget size: " + budgetMap.size + " Notifying adapter!")
-
             // List of budgets to display, in the correct displaying order as well.
             val budgetList = ArrayList(budgetMap.values)
 
-            // Allow the adapter to create any necessary budgets
-            adapter.setBudgets(budgetList)
-            adapter.notifyDataSetChanged()
-
             // If the number of budgets changed, that means that a budget was added or deleted.
             // We now need to refresh all the budgets.
-            if (previousBudgetCount >= 0 && budgetList.size != previousBudgetCount) {
+            // Will refresh at the start, since previousBudgetCount starts at -1.
+            if (budgetList.size != previousBudgetCount) {
+//                Log.d(TAG, "new budget count: " + budgetMap.size + ", Old budget count: " + previousBudgetCount)
+
+                // Allow the adapter to create any necessary budgets
+                adapter.setBudgets(budgetList)
+                adapter.notifyDataSetChanged()
 
                 // loop from zero to budgetList.size - 1
                 for (i in 0 until budgetList.size) {
@@ -62,8 +62,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-
-
 
             // Update the number of budgets we count.
             previousBudgetCount = budgetList.size
