@@ -1,9 +1,9 @@
-package ai.chench.assidua
+package ai.assidua.assidua_android
 
-import ai.chench.assidua.data.Budget
-import ai.chench.assidua.data.ExpenditureViewModel
-import ai.chench.assidua.util.BackPressable
-import ai.chench.assidua.util.CsvBudgetIoUtil
+import ai.assidua.assidua_android.data.Budget
+import ai.assidua.assidua_android.data.ExpenditureViewModel
+import ai.assidua.assidua_android.util.BackPressable
+import ai.assidua.assidua_android.util.CsvBudgetIoUtil
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import app.assidua.assidua_android.R
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 import java.nio.charset.Charset

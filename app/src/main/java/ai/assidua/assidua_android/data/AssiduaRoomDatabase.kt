@@ -1,4 +1,4 @@
-//package ai.chench.assidua
+//package app.assidua.assidua_android
 //
 //import android.content.Context
 //import androidx.room.*

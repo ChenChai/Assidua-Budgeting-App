@@ -1,4 +1,4 @@
-package ai.chench.assidua;
+package ai.assidua.assidua_android;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("ai.chench.assidua", appContext.getPackageName());
+        assertEquals("app.assidua.assidua_android", appContext.getPackageName());
     }
 }

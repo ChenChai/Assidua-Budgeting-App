@@ -1,4 +1,4 @@
-package ai.chench.assidua.util
+package ai.assidua.assidua_android.util
 
 import androidx.room.TypeConverter
 import java.math.BigDecimal

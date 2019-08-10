@@ -1,4 +1,4 @@
-//package ai.chench.assidua
+//package app.assidua.assidua_android
 //
 //import androidx.lifecycle.LiveData
 //import androidx.lifecycle.MutableLiveData

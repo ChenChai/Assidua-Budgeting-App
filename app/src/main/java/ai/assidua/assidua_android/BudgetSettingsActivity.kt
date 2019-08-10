@@ -1,9 +1,8 @@
-package ai.chench.assidua
+package ai.assidua.assidua_android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
-import kotlinx.android.synthetic.main.activity_budget_settings.*
+import app.assidua.assidua_android.R
 
 class BudgetSettingsActivity : AppCompatActivity() {
 

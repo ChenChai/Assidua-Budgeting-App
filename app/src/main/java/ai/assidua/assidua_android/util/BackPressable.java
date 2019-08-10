@@ -1,4 +1,4 @@
-package ai.chench.assidua.util;
+package ai.assidua.assidua_android.util;
 
 public interface BackPressable {
     /**

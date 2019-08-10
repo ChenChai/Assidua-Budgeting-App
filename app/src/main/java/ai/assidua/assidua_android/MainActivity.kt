@@ -1,4 +1,4 @@
-package ai.chench.assidua
+package ai.assidua.assidua_android
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -10,13 +10,13 @@ import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 
 import java.util.ArrayList
-import java.util.UUID
 
-import ai.chench.assidua.data.Budget
-import ai.chench.assidua.data.ExpenditureViewModel
-import ai.chench.assidua.util.BackPressable
+import ai.assidua.assidua_android.data.Budget
+import ai.assidua.assidua_android.data.ExpenditureViewModel
+import ai.assidua.assidua_android.util.BackPressable
 import android.util.Log
 import androidx.lifecycle.Observer
+import app.assidua.assidua_android.R
 
 class MainActivity : AppCompatActivity() {
 

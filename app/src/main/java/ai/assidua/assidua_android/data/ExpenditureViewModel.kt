@@ -1,6 +1,5 @@
-package ai.chench.assidua.data
+package ai.assidua.assidua_android.data
 
-import ai.chench.assidua.R
 import android.app.Application
 import android.content.Context
 import android.util.Log
@@ -9,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import app.assidua.assidua_android.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

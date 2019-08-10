@@ -1,4 +1,4 @@
-package ai.chench.assidua;
+package ai.assidua.assidua_android;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import ai.chench.assidua.data.Expenditure;
+import ai.assidua.assidua_android.data.Expenditure;
+import app.assidua.assidua_android.R;
 
 public class ExpenditureAdapter extends RecyclerView.Adapter<ExpenditureAdapter.ViewHolder> {
     private static final String TAG = "ExpenditureAdapter";

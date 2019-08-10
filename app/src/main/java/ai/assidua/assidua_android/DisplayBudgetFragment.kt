@@ -1,8 +1,8 @@
-package ai.chench.assidua
+package ai.assidua.assidua_android
 
-import ai.chench.assidua.data.Budget
-import ai.chench.assidua.data.Expenditure
-import ai.chench.assidua.data.ExpenditureViewModel
+import ai.assidua.assidua_android.data.Budget
+import ai.assidua.assidua_android.data.Expenditure
+import ai.assidua.assidua_android.data.ExpenditureViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import app.assidua.assidua_android.R
 import kotlinx.android.synthetic.main.fragment_display_budget.*
 import kotlinx.android.synthetic.main.fragment_display_budget.view.*
 import java.math.BigDecimal

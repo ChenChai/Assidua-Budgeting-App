@@ -1,4 +1,4 @@
-package ai.chench.assidua;
+package ai.assidua.assidua_android;
 
 import org.junit.Test;
 
