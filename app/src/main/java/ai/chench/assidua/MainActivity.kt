@@ -21,7 +21,7 @@ import androidx.lifecycle.Observer
 class MainActivity : AppCompatActivity() {
 
     // Number of budgets last observed
-    var previousBudgetOrder: MutableList<String> = mutableListOf()
+    var previousBudgetOrder: MutableList<Pair<String, String>> = mutableListOf()
 
 
     lateinit var tabLayout: TabLayout
@@ -53,17 +53,20 @@ class MainActivity : AppCompatActivity() {
 
             var budgetOrderChanged = false
 
-            // Loop through each of the budgets' UUIDs and compare them to the ones we have stored.
+            // Loop through each of the budgets' UUIDs and names and compare them to the ones we have stored.
             // If any of them have changed, then we need to update the UI. Otherwise, we can actually
             // skip updating it, as each fragment will take care of updating of individual expenditures
 
             // Check if previous budget order is same or different size
+            // If budget list size has changed, then we know for sure that the UI needs to be refreshed.
             if (previousBudgetOrder.size != budgetList.size) {
                 budgetOrderChanged = true
             } else {
                 for (i in 0 until budgetList.size - 1) {
-                    if (previousBudgetOrder.size - 1 >= i
-                            && previousBudgetOrder[i] != budgetList[i].id.toString()) {
+                    // Check that neither the budget order nor name jave changed
+                    if (previousBudgetOrder[i].first != budgetList[i].id.toString()
+                            || previousBudgetOrder[i].second != budgetList[i].name) {
+                        // If either has, refresh the UI.
                         budgetOrderChanged = true
                         break
                     }
@@ -77,7 +80,8 @@ class MainActivity : AppCompatActivity() {
             // Update the last-seen budgets
             previousBudgetOrder.clear()
             for (budget in budgetList) {
-                previousBudgetOrder.add(budget.id.toString())
+                previousBudgetOrder.add(
+                        Pair(budget.id.toString(), budget.name))
             }
         })
 
@@ -87,7 +91,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun refreshUI(budgetList: List<Budget>) {
-        //                Log.d(TAG, "new budget count: " + budgetMap.size + ", Old budget count: " + previousBudgetCount)
 
         // Allow the adapter to create any necessary budgets
         adapter.setBudgets(budgetList)
