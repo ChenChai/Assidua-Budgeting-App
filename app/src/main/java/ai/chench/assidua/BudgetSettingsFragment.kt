@@ -22,13 +22,16 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import java.io.ByteArrayOutputStream
 import java.io.OutputStream
+import java.nio.charset.Charset
 import java.util.*
 
 class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
     companion object {
         const val ARGUMENT_BUDGET_UUID = "ARGUMENT_BUDGET_UUID"
         const val TAG = "BudgetSettingsFragment"
+        private const val REQUEST_SAVE_BUDGET_TEXT = 1142
     }
 
     var budget: Budget? = null
@@ -93,7 +96,14 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
         findPreference<Preference>(getString(R.string.preference_budget_export_key))
                 ?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
-            CsvBudgetIoUtil.getExportUri(this)
+            if (android.os.Build.VERSION.SDK_INT >= 19) {
+                // Save as a CSV document if the OS version is recent enough.
+                CsvBudgetIoUtil.getExportUri(this)
+            } else {
+                // If not, just save as plain text.
+                exportAsPlainTextCsv()
+            }
+
             return@OnPreferenceClickListener true
         }
 
@@ -131,6 +141,29 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
         }
 
         return view
+    }
+
+    private fun exportAsPlainTextCsv() {
+        if (context != null) {
+            AlertDialog.Builder(context)
+                    .setTitle("Export as Plain Text?")
+                    .setMessage("CSV export doesn't work on older OS versions. Export as text CSV instead?")
+                    .setPositiveButton("Yes") { dialogInterface, i ->
+
+                        val intent = Intent(Intent.ACTION_SEND)
+                        intent.type = "text/plain"
+
+                        val baos = ByteArrayOutputStream()
+                        CsvBudgetIoUtil.saveBudget(budget, baos)
+
+                        val csv = String(baos.toByteArray(), Charset.defaultCharset())
+
+                        intent.putExtra(Intent.EXTRA_TEXT, csv)
+                        startActivityForResult(intent, REQUEST_SAVE_BUDGET_TEXT)
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

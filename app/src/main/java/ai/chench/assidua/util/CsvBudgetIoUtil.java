@@ -1,5 +1,8 @@
 package ai.chench.assidua.util;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 
@@ -10,6 +13,8 @@ import com.opencsv.CSVWriter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -118,15 +123,14 @@ public class CsvBudgetIoUtil {
      * Gets a CSV mime type uri using intents. Result will be returned through onActivityResult.
      * @param fragment The fragment which will handle the OnActivityResult
      */
+    @TargetApi(19)
     public static void getExportUri(Fragment fragment) {
-        if (android.os.Build.VERSION.SDK_INT >= 19) {
-            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("text/comma-separated-values");
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/comma-separated-values");
 
-            fragment.startActivityForResult(intent, EXPORT_CSV_REQUEST_CODE);
-        } else {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-        }
+        fragment.startActivityForResult(intent, EXPORT_CSV_REQUEST_CODE);
     }
+
+
 }
