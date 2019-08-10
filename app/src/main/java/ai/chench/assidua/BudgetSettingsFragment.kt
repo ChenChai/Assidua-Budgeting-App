@@ -3,10 +3,13 @@ package ai.chench.assidua
 import ai.chench.assidua.data.Budget
 import ai.chench.assidua.data.ExpenditureViewModel
 import ai.chench.assidua.util.BackPressable
+import ai.chench.assidua.util.CsvBudgetIoUtil
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import java.io.OutputStream
 import java.util.*
 
 class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
@@ -86,6 +90,13 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
             }
         }
 
+        findPreference<Preference>(getString(R.string.preference_budget_export_key))
+                ?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+
+            CsvBudgetIoUtil.getExportUri(budget, this)
+            return@OnPreferenceClickListener true
+        }
+
 
         // Listen for when the user tries to click the delete budget button.
         findPreference<Preference>(getString(R.string.preference_budget_delete_key))
@@ -120,6 +131,27 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
         }
 
         return view
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // User just selected a place to save CSV
+        if (requestCode == CsvBudgetIoUtil.EXPORT_CSV_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val uri: Uri? = data?.data?.also{
+                // Find the output stream to write to
+                val outputStream: OutputStream? = context?.applicationContext?.contentResolver?.openOutputStream(it)
+
+                if (outputStream != null) {
+                    // write to that output stream!
+                    CsvBudgetIoUtil.saveBudget(budget, outputStream)
+                } else {
+                    Toast.makeText(context, getString(R.string.export_failed), Toast.LENGTH_LONG).show()
+                }
+            }
+
+            if (uri == null) {
+                Toast.makeText(context, getString(R.string.export_failed), Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun setupActionBar() {

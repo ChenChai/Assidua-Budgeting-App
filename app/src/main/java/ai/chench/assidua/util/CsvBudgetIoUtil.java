@@ -1,15 +1,19 @@
 package ai.chench.assidua.util;
 
+import android.content.Intent;
 import android.util.Log;
+
+import androidx.fragment.app.Fragment;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,9 +23,9 @@ import java.util.UUID;
 import ai.chench.assidua.data.Budget;
 import ai.chench.assidua.data.Expenditure;
 
-public class CsvBudgetParser {
+public class CsvBudgetIoUtil {
 
-    private static final String TAG = "CsvBudgetParser";
+    private static final String TAG = "CsvBudgetIoUtil";
 
     // Variables for determining order of CSV inputs:
     private static final int BUDGET_UUID = 0;
@@ -35,13 +39,13 @@ public class CsvBudgetParser {
 
     // Formatting string: Fill with expenditure UUID, expenditure name, expenditure date, and expenditure balance
 
-    public static Budget parseBudget(File csv) {
+    public static Budget parseBudget(InputStream inputStream) {
         String budgetName;
         String budgetBalance;
         Budget budget;
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(csv), 1000);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream), 1000);
             CSVReader csvReader = new CSVReader(bufferedReader);
             String[] budgetRecord = csvReader.readNext();
 
@@ -72,10 +76,10 @@ public class CsvBudgetParser {
         return budget;
     }
 
-    public static boolean saveBudget(Budget budget, File output) {
-        Log.d(TAG, "Saving budget " + budget.getName() + " to " + output.getAbsolutePath());
+    public static boolean saveBudget(Budget budget, OutputStream outputStream) {
+        Log.d(TAG, "Saving budget " + budget.getName());
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(output), 1000);
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream), 1000);
             CSVWriter csvWriter = new CSVWriter(bufferedWriter);
 
             // Write the budget as the first line of the csv
@@ -104,6 +108,21 @@ public class CsvBudgetParser {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+
+    public static final int EXPORT_CSV_REQUEST_CODE = 1215;
+
+    public static void getExportUri(Budget budget, Fragment fragment) {
+        if (android.os.Build.VERSION.SDK_INT >= 19) {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("text/csv");
+
+            fragment.startActivityForResult(intent, EXPORT_CSV_REQUEST_CODE);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_SEND);
         }
     }
 }

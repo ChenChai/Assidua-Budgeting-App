@@ -17,7 +17,8 @@
 
     <Preference
         android:icon="@drawable/ic_export"
-        app:title="@string/export_csv" />
+        app:title="@string/export_csv"
+        app:key="@string/preference_budget_export_key"/>
 
     <Preference
         android:icon="@drawable/ic_delete"

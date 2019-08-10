@@ -1,11 +1,12 @@
 package ai.chench.assidua.data
 
-import ai.chench.assidua.util.CsvBudgetParser
+import ai.chench.assidua.util.CsvBudgetIoUtil
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.io.File
-import java.math.BigDecimal
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -34,7 +35,7 @@ class BudgetRepository(private val budgetDirectory: File) {
         budgetDirectory.listFiles().forEach { file ->
             Log.d(TAG, "Attempting to parse a budget from: $file")
             // Attempt to parse the budget
-            CsvBudgetParser.parseBudget(file)?.let {
+            CsvBudgetIoUtil.parseBudget(FileInputStream(file))?.let {
 
                 // If successful, add the budget to the map
                 budget -> budgetMap.put(budget.id, budget)
@@ -115,13 +116,16 @@ class BudgetRepository(private val budgetDirectory: File) {
     private fun saveAllBudgets() {
         _allBudgets.value?.forEach {
             val budget = it.value
-            CsvBudgetParser.saveBudget(budget, File(budgetDirectory, budget.id.toString()))
+            CsvBudgetIoUtil.saveBudget(budget,
+                    FileOutputStream(File(budgetDirectory, budget.id.toString())))
         }
     }
 
     private fun saveBudget(budget: Budget) {
-        CsvBudgetParser.saveBudget(budget, File(budgetDirectory, budget.id.toString()))
+        CsvBudgetIoUtil.saveBudget(budget,
+                FileOutputStream(File(budgetDirectory, budget.id.toString())))
     }
+
 
 //    //Old database code
 //    val allExpendiures: LiveData<List<Expenditure>> = expenditureDAO.getAllExpenditures()
