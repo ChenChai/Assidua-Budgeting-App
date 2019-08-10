@@ -83,7 +83,16 @@ class DisplayBudgetFragment : Fragment() {
                     if (it.isNotEmpty()) {
                         val expenditure = it.get(it.size - 1)
                         expenditureNameEditText.setText(expenditure.name)
-                        expenditureCostEditText.setText(expenditure.value.toString())
+                        // Set the value as the absolute value, and just change the income/expense switch
+                        // to account for that.
+                        expenditureCostEditText.setText(expenditure.value.abs().toString())
+                        if (expenditure.value > BigDecimal.ZERO) {
+                            // Transaction was income
+                            incomeSwitch.setChecked(true)
+                        } else if (expenditure.value < BigDecimal.ZERO) {
+                            // Transaction was expense.
+                            incomeSwitch.setChecked(false)
+                        }
                     }
                 }
                 budget?.let { viewModel.deleteLastExpenditure(it) }
