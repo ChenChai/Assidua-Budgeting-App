@@ -93,6 +93,21 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
             }
         }
 
+        // Move budget left when clicked.
+        findPreference<Preference>(getString(R.string.preference_budget_move_left_key))
+                ?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            viewModel.moveBudgetLeft(budgetId)
+            return@OnPreferenceClickListener true
+        }
+
+        // Move budget left when clicked.
+        findPreference<Preference>(getString(R.string.preference_budget_move_right_key))
+                ?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            viewModel.moveBudgetRight(budgetId)
+            return@OnPreferenceClickListener true
+        }
+
+
         findPreference<Preference>(getString(R.string.preference_budget_export_key))
                 ?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
 

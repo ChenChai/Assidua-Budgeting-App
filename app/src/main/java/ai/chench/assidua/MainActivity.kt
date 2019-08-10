@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 
 import android.os.Bundle
-import android.util.Log
 
 import com.google.android.material.tabs.TabLayout
 
@@ -16,6 +15,7 @@ import java.util.UUID
 import ai.chench.assidua.data.Budget
 import ai.chench.assidua.data.ExpenditureViewModel
 import ai.chench.assidua.util.BackPressable
+import android.util.Log
 import androidx.lifecycle.Observer
 
 class MainActivity : AppCompatActivity() {
@@ -38,10 +38,10 @@ class MainActivity : AppCompatActivity() {
                 FragmentStatePagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT,
                 ArrayList())
 
-        viewModel.budgets.observe(this, Observer { budgetMap: Map<UUID, Budget> ->
+        viewModel.budgets.observe(this, Observer { budgetList:List<Budget> ->
             // List of budgets to display, in the correct displaying order as well.
-            val budgetList = ArrayList(budgetMap.values)
 
+            Log.d(TAG, "Budget List: $budgetList")
             // If the number of budgets changed, that means that a budget was added or deleted.
             // We now need to refresh all the budgets.
             // Will refresh at the start, since previousBudgetCount starts at -1.

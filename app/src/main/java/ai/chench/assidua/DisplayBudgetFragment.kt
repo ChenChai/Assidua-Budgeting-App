@@ -4,7 +4,6 @@ import ai.chench.assidua.data.Budget
 import ai.chench.assidua.data.Expenditure
 import ai.chench.assidua.data.ExpenditureViewModel
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

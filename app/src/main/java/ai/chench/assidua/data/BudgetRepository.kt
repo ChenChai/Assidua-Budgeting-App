@@ -12,15 +12,19 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class BudgetRepository(private val budgetDirectory: File) {
+
     // Extension to update observers of updated data
     fun <T> MutableLiveData<T>.notifyObservers() {
         this.value = this.value
     }
+    fun notifyBudgetObservers() {
+        _allBudgets.notifyObservers()
+    }
 
     companion object {
         const val TAG = "BudgetRepository"
-    }
 
+    }
 
     private val _allBudgets: MutableLiveData<MutableMap<UUID, Budget>> = MutableLiveData()
 
