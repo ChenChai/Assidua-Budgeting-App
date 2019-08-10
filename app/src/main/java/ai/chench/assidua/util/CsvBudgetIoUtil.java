@@ -95,10 +95,10 @@ public class CsvBudgetIoUtil {
 
             csvWriter.writeNext(budgetRecord);
 
+            String[] expenditureRecord = new String[4];
             // write each expenditure as the next
             for (Expenditure expenditure : budget.getExpenditures()) {
 
-                String[] expenditureRecord = new String[4];
                 expenditureRecord[EXPENDITURE_NAME] = expenditure.getName();
                 expenditureRecord[EXPENDITURE_UUID] = expenditure.getId().toString();
                 expenditureRecord[EXPENDITURE_VALUE] = expenditure.getValue().toString();
