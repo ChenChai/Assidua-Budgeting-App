@@ -38,11 +38,11 @@
     <string name="income">Income</string>
     <string name="delete">Delete</string>
 
-    <string name="remaining_budget">Remaining Budget:</string>
-    <string name="add_expenditure_cost">Cost</string>
+    <string name="remaining_budget">Budget Balance:</string>
+    <string name="add_expenditure_cost">Amount</string>
     <string name="add_expenditure_name">Name (Optional)</string>
     <string name="undo_button_text">Undo</string>
-    <string name="add_button_text">Commit</string>
+    <string name="add_button_text">Add</string>
     <string name="untitled_expenditure">Untitled</string>
 
     <!-- Displayed in individual budgets' settings pages -->
