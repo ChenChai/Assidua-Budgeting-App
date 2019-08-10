@@ -14,6 +14,11 @@
     <Preference
         android:icon="@drawable/ic_arrow_right"
         app:title="@string/move_right" />
+
+    <Preference
+        android:icon="@drawable/ic_export"
+        app:title="@string/export_csv" />
+
     <Preference
         android:icon="@drawable/ic_delete"
         app:title="@string/delete_budget"

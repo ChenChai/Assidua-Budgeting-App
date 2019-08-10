@@ -45,6 +45,7 @@
 
     <string name="move_left">Move Left</string>
     <string name="move_right">Move Right</string>
+    <string name="export_csv">Export CSV</string>
 
     <string name="delete_budget">Delete budget</string>
     <string name="action_cannot_be_undone">This action cannot be undone!</string>
