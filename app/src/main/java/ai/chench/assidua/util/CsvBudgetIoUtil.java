@@ -114,11 +114,15 @@ public class CsvBudgetIoUtil {
 
     public static final int EXPORT_CSV_REQUEST_CODE = 1215;
 
-    public static void getExportUri(Budget budget, Fragment fragment) {
+    /**
+     * Gets a CSV mime type uri using intents. Result will be returned through onActivityResult.
+     * @param fragment The fragment which will handle the OnActivityResult
+     */
+    public static void getExportUri(Fragment fragment) {
         if (android.os.Build.VERSION.SDK_INT >= 19) {
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("text/csv");
+            intent.setType("text/comma-separated-values");
 
             fragment.startActivityForResult(intent, EXPORT_CSV_REQUEST_CODE);
         } else {

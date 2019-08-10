@@ -93,7 +93,7 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
         findPreference<Preference>(getString(R.string.preference_budget_export_key))
                 ?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
-            CsvBudgetIoUtil.getExportUri(budget, this)
+            CsvBudgetIoUtil.getExportUri(this)
             return@OnPreferenceClickListener true
         }
 
