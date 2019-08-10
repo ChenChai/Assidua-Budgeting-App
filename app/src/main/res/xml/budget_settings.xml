@@ -9,13 +9,14 @@
         app:title="@string/budget_name"
         app:useSimpleSummaryProvider="true" />
     <Preference
-        android:icon="@drawable/ic_arrow_left"
-        app:title="@string/move_left"
-        app:key="@string/preference_budget_move_left_key"/>
-    <Preference
         android:icon="@drawable/ic_arrow_right"
         app:title="@string/move_right"
         app:key="@string/preference_budget_move_right_key"/>
+
+    <Preference
+        android:icon="@drawable/ic_arrow_left"
+        app:title="@string/move_left"
+        app:key="@string/preference_budget_move_left_key"/>
 
     <Preference
         android:icon="@drawable/ic_export"
