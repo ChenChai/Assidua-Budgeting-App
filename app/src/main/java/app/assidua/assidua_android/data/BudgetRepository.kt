@@ -109,7 +109,7 @@ class BudgetRepository(private val budgetDirectory: File) {
      * @return Whether deletion was successful
      */
     fun deleteBudget(budgetId: UUID) : Boolean {
-        Log.d(TAG, "Deleting budget with ID $budgetId")
+//        Log.d(TAG, "Deleting budget with ID $budgetId")
 
         // remove the budget from memory
         _allBudgets.value?.remove(budgetId)

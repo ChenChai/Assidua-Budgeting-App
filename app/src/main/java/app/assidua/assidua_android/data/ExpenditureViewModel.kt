@@ -122,7 +122,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
 //            Log.d("CHEN", "Index was $index")
 
             if (index < 0) {
-                Log.e(TAG, "Just tried to move budget id $budgetId to the right, but budget could not be found in budget order list!")
+//                Log.e(TAG, "Just tried to move budget id $budgetId to the right, but budget could not be found in budget order list!")
                 return@let
             }
 
@@ -143,7 +143,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
             val index = it.indexOf(budgetId)
 
             if (index < 0) {
-                Log.e(TAG, "Just tried to move budget id $budgetId to the right, but budget could not be found in budget order list!")
+//                Log.e(TAG, "Just tried to move budget id $budgetId to the right, but budget could not be found in budget order list!")
                 return@let
             }
 //            Log.d("CHEN", "Index was $index")

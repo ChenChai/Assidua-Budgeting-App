@@ -151,7 +151,7 @@ class BudgetSettingsFragment : PreferenceFragmentCompat(), BackPressable {
         }
 
         if (budget == null) {
-            Log.e(TAG, "Could not find budget associated with budget ID $budgetId")
+//            Log.e(TAG, "Could not find budget associated with budget ID $budgetId")
             onBackPressed()
         }
 
