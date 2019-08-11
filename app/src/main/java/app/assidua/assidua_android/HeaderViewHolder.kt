@@ -1,11 +1,10 @@
 package app.assidua.assidua_android
 
+import android.app.Activity
 import android.content.Context
+import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Switch
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.LiveData
@@ -21,17 +20,15 @@ import java.math.RoundingMode
 import java.util.*
 
 class HeaderViewHolder(view: View, viewModel: ExpenditureViewModel, budgetLiveData: LiveData<Budget>) : RecyclerView.ViewHolder(view) {
-    val context: Context = view.context
-    val addExpenditureButton: Button = view.findViewById(R.id.addExpenditureButton)
-    val undoExpenditureButton: Button = view.findViewById(R.id.undoExpenditureButton)
+    private val context: Context = view.context
+    private val addExpenditureButton: Button = view.findViewById(R.id.addExpenditureButton)
+    private val undoExpenditureButton: Button = view.findViewById(R.id.undoExpenditureButton)
+    private val expenditureCostEditText: EditText = view.findViewById(R.id.expenditureCostEditText)
+    private val expenditureNameEditText: EditText = view.findViewById(R.id.expenditureNameEditText)
+    private val remainingMoneyTextView: TextView = view.findViewById(R.id.remainingMoneyTextView)
+    private val incomeSwitch: SwitchCompat = view.findViewById(R.id.incomeSwitch)
 
-    val expenditureCostEditText: EditText = view.findViewById(R.id.expenditureCostEditText)
-
-    val incomeSwitch: SwitchCompat = view.findViewById(R.id.incomeSwitch)
-    val expenditureNameEditText: EditText = view.findViewById(R.id.expenditureNameEditText)
-
-    val remainingMoneyTextView: TextView = view.findViewById(R.id.remainingMoneyTextView)
-
+    private val settingsButton: ImageView = view.findViewById(R.id.settingsButton)
     private val clickListener = View.OnClickListener { view ->
         when (view) {
             addExpenditureButton -> {
@@ -92,12 +89,30 @@ class HeaderViewHolder(view: View, viewModel: ExpenditureViewModel, budgetLiveDa
                 }
                 budgetLiveData.value?.let { viewModel.deleteLastExpenditure(it) }
             }
+
+            settingsButton -> {
+                // Launch the settings fragment to allow the user to modify this budget
+                val settingsFragment = BudgetSettingsFragment()
+
+                // Put UUID as argument to the fragment
+                val args = Bundle()
+//            Log.d(TAG, "Launching settings fragment with budget id ${getUpdatedBudgetID()}")
+                args.putString(BudgetSettingsFragment.ARGUMENT_BUDGET_UUID, budgetLiveData.value?.id.toString())
+
+                settingsFragment.arguments = args
+
+                (context as? AppCompatActivity)?.supportFragmentManager?.beginTransaction()?.replace(
+                        R.id.settings,
+                        settingsFragment
+                )?.commitAllowingStateLoss()
+            }
         }
     }
 
     init {
-        view.addExpenditureButton.setOnClickListener(clickListener)
-        view.undoExpenditureButton.setOnClickListener(clickListener)
+        addExpenditureButton.setOnClickListener(clickListener)
+        undoExpenditureButton.setOnClickListener(clickListener)
+        settingsButton.setOnClickListener(clickListener)
 
         (view.context as? AppCompatActivity)?.let {activity ->
             budgetLiveData.observe(activity, androidx.lifecycle.Observer { budget ->

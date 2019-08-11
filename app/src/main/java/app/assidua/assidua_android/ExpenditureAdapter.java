@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.math.BigDecimal;
@@ -55,9 +56,14 @@ public class ExpenditureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     // Start off with a random budget
     private Budget budget = null;
 
-    private GetHeaderViewHolder getHeaderViewHolder;
+    private GetHeaderViewHolder getHeaderViewHolder = null;
 
-    public ExpenditureAdapter(boolean showHeader, GetHeaderViewHolder getHeaderViewHolder) {
+    public ExpenditureAdapter(boolean showHeader, @Nullable GetHeaderViewHolder getHeaderViewHolder) {
+        if (getHeaderViewHolder == null && showHeader) {
+            throw new NullPointerException(
+                    "No GetHeaderViewHolder passed to adapter, but adapter was asked for a header!");
+        }
+
         this.getHeaderViewHolder = getHeaderViewHolder;
         this.showHeader = showHeader;
     }
