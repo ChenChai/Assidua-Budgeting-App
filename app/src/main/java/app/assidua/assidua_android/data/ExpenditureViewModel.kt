@@ -12,9 +12,6 @@ import app.assidua.assidua_android.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import java.io.File
 
 import java.util.*
@@ -28,9 +25,6 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     // to the data in the budgets, which is handled by the repository.
     private var budgetOrder: MutableList<UUID> = mutableListOf()
     private var mApplication = application
-
-    private val viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private val _budgets: LiveData<MutableMap<UUID, Budget>>
     val budgets: LiveData<List<Budget>>
