@@ -204,25 +204,6 @@ class DisplayBudgetFragment : Fragment() {
 
         view.expendituresRecyclerView.adapter = adapter
         view.expendituresRecyclerView.layoutManager = layoutManager
-//
-//        view.incomeSwitch.setOnCheckedChangeListener { _, checked ->
-//            view.switchTextView.text = if (checked) getString(R.string.income) else getString(R.string.expense)
-//        }
-//
-//
-//
-//        // When the user finishes with the name entry field, automatically insert the expenditure.
-//        // Then, switch the focus back to the expenditure value edit text
-//        view.expenditureNameEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
-//            return@setOnEditorActionListener when(actionId) {
-//                EditorInfo.IME_ACTION_GO -> {
-//                    view.addExpenditureButton.performClick()
-//                    view.expenditureCostEditText.requestFocus()
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
 
         return view
     }

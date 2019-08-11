@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -27,6 +28,7 @@ class HeaderViewHolder(view: View, viewModel: ExpenditureViewModel, budgetLiveDa
     private val expenditureNameEditText: EditText = view.findViewById(R.id.expenditureNameEditText)
     private val remainingMoneyTextView: TextView = view.findViewById(R.id.remainingMoneyTextView)
     private val incomeSwitch: SwitchCompat = view.findViewById(R.id.incomeSwitch)
+    private val switchTextView: TextView = view.findViewById(R.id.switchTextView)
 
     private val settingsButton: ImageView = view.findViewById(R.id.settingsButton)
     private val clickListener = View.OnClickListener { view ->
@@ -127,6 +129,26 @@ class HeaderViewHolder(view: View, viewModel: ExpenditureViewModel, budgetLiveDa
                     context.resources.let {remainingMoneyTextView.setTextColor(it.getColor(R.color.colorPositive) )}
                 }
             })
+        }
+
+
+        incomeSwitch.setOnCheckedChangeListener { _, checked ->
+            switchTextView.text = if (checked) context.getString(R.string.income) else context.getString(R.string.expense)
+        }
+
+
+
+        // When the user finishes with the name entry field, automatically insert the expenditure.
+        // Then, switch the focus back to the expenditure value edit text
+        expenditureNameEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
+            return@setOnEditorActionListener when(actionId) {
+                EditorInfo.IME_ACTION_GO -> {
+                    addExpenditureButton.performClick()
+                    expenditureCostEditText.requestFocus()
+                    true
+                }
+                else -> false
+            }
         }
 
     }
