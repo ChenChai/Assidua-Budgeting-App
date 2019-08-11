@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             if (previousBudgetOrder.size != budgetList.size) {
                 budgetOrderChanged = true
             } else {
-                for (i in 0 until budgetList.size - 1) {
+                for (i in 0 until budgetList.size) {
                     // Check that neither the budget order nor name jave changed
                     if (previousBudgetOrder[i].first != budgetList[i].id.toString()
                             || previousBudgetOrder[i].second != budgetList[i].name) {
@@ -73,8 +73,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (budgetOrderChanged) {
+                Log.d(TAG, "Budgets changed!")
                 refreshUI(budgetList)
             }
+
+            Log.d(TAG, "Old List: $previousBudgetOrder")
 
             // Update the last-seen budgets
             previousBudgetOrder.clear()
@@ -82,6 +85,8 @@ class MainActivity : AppCompatActivity() {
                 previousBudgetOrder.add(
                         Pair(budget.id.toString(), budget.name))
             }
+
+            Log.d(TAG, "New List: $previousBudgetOrder")
         })
 
         viewPager.setAdapter(adapter)
