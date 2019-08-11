@@ -122,12 +122,12 @@ class DisplayBudgetFragment : Fragment() {
 
         adapter.setBudget(budget)
 
-        // Scroll to the top to see the most recently added transaction
-        expendituresRecyclerView.smoothScrollToPosition(
+        // Scroll to the top after insert, as insertion throws off the recyclerview position
+        expendituresRecyclerView.scrollToPosition(
                 if (adapter.itemCount - 1 < 0) 0
                 else adapter.itemCount - 1
         )
-//
+////
 //        val balance = budget?.balance
 //        activity?.runOnUiThread {
 //            remainingMoneyTextView.setText(balance?.setScale(2)?.toPlainString()) // Set the number to always have 2 decimal places
