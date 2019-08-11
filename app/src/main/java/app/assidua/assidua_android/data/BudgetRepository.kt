@@ -37,7 +37,7 @@ class BudgetRepository(private val budgetDirectory: File) {
         budgetDirectory.mkdirs()
         // Read all the budgets from the directory
         budgetDirectory.listFiles().forEach { file ->
-            Log.d(TAG, "Attempting to parse a budget from: $file")
+//            Log.d(TAG, "Attempting to parse a budget from: $file")
             // Attempt to parse the budget (will return null if failed to parse)
             CsvBudgetIoUtil.parseBudget(FileInputStream(file))?.let {
 

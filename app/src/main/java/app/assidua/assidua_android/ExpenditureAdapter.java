@@ -106,7 +106,7 @@ public class ExpenditureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             holder.expenditureDate.setText(expenditure.getDate().toString());
 
             holder.itemView.setOnClickListener((View v) -> {
-                Log.d(TAG, "Clicked expenditure with UUID: " + expenditures.get(actualPosition).getId().toString());
+//                Log.d(TAG, "Clicked expenditure with UUID: " + expenditures.get(actualPosition).getId().toString());
             });
         } else if (genericHolder instanceof HeaderViewHolder) {
             // TODO inflate?

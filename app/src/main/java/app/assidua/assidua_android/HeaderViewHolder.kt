@@ -118,6 +118,7 @@ class HeaderViewHolder(view: View, viewModel: ExpenditureViewModel, budgetLiveDa
 
         (view.context as? AppCompatActivity)?.let {activity ->
             budgetLiveData.observe(activity, androidx.lifecycle.Observer { budget ->
+                if (budget == null) { return@Observer }
                 val balance = budget.balance
                 remainingMoneyTextView.setText(balance.setScale(2)?.toPlainString()) // Set the number to always have 2 decimal places
 

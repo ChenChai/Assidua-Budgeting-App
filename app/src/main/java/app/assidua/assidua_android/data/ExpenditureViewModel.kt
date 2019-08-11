@@ -38,7 +38,7 @@ class ExpenditureViewModel(application: Application) : AndroidViewModel(applicat
     private val repository: BudgetRepository
 
     init {
-        Log.d(TAG, "Created a new $TAG")
+//        Log.d(TAG, "Created a new $TAG")
         repository = BudgetRepository(File(application.filesDir, application.getString(R.string.budget_directory_location)))
         _budgets = repository.allBudgets
 

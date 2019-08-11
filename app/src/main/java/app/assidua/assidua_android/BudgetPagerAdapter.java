@@ -38,10 +38,10 @@ public class BudgetPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == budgets.size()) {
-            Log.d(TAG, "setting position " + position + " to a create budget fragment");
+//            Log.d(TAG, "setting position " + position + " to a create budget fragment");
             return new CreateBudgetFragment();
         } else {
-            Log.d(TAG, "setting position " + position + " to a display budget fragment");
+//            Log.d(TAG, "setting position " + position + " to a display budget fragment");
 
             DisplayBudgetFragment fragment = new DisplayBudgetFragment();
 

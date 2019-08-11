@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.budgets.observe(this, Observer { budgetList:List<Budget> ->
 
             // List of budgets to display, in the correct displaying order as well.
-            Log.d(TAG, "Budget List: $budgetList")
+//            Log.d(TAG, "Budget List: $budgetList")
 
             var budgetOrderChanged = false
 
@@ -73,11 +73,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (budgetOrderChanged) {
-                Log.d(TAG, "Budgets changed!")
+//                Log.d(TAG, "Budgets changed!")
                 refreshUI(budgetList)
             }
 
-            Log.d(TAG, "Old List: $previousBudgetOrder")
+//            Log.d(TAG, "Old List: $previousBudgetOrder")
 
             // Update the last-seen budgets
             previousBudgetOrder.clear()
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                         Pair(budget.id.toString(), budget.name))
             }
 
-            Log.d(TAG, "New List: $previousBudgetOrder")
+//            Log.d(TAG, "New List: $previousBudgetOrder")
         })
 
         viewPager.setAdapter(adapter)

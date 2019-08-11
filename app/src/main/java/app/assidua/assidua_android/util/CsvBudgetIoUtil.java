@@ -100,7 +100,7 @@ public class CsvBudgetIoUtil {
             return false;
         }
 
-        Log.d(TAG, "Saving budget " + budget.getName());
+//        Log.d(TAG, "Saving budget " + budget.getName());
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream), 1000);
             CSVWriter csvWriter = new CSVWriter(bufferedWriter);
