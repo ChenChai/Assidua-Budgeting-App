@@ -1,4 +1,4 @@
-package ai.assidua.assidua_android.util;
+package app.assidua.assidua_android.util;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -21,8 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import ai.assidua.assidua_android.data.Budget;
-import ai.assidua.assidua_android.data.Expenditure;
+import app.assidua.assidua_android.data.Budget;
+import app.assidua.assidua_android.data.Expenditure;
 
 public class CsvBudgetIoUtil {
 

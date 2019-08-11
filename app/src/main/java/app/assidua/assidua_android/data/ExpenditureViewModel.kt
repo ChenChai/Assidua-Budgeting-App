@@ -1,4 +1,4 @@
-package ai.assidua.assidua_android.data
+package app.assidua.assidua_android.data
 
 import android.app.Application
 import android.content.Context

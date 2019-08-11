@@ -1,4 +1,4 @@
-package ai.assidua.assidua_android;
+package app.assidua.assidua_android;
 
 import org.junit.Test;
 

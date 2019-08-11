@@ -1,8 +1,7 @@
-package ai.assidua.assidua_android
+package app.assidua.assidua_android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import app.assidua.assidua_android.R
 
 class BudgetSettingsActivity : AppCompatActivity() {
 

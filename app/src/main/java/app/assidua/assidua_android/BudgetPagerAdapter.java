@@ -1,4 +1,4 @@
-package ai.assidua.assidua_android;
+package app.assidua.assidua_android;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
-import ai.assidua.assidua_android.data.Budget;
+import app.assidua.assidua_android.data.Budget;
 
 /**
  * ViewPager adapter that creates fragments which each display a budget.

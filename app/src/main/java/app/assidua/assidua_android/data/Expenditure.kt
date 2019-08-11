@@ -1,4 +1,4 @@
-package ai.assidua.assidua_android.data
+package app.assidua.assidua_android.data
 
 import androidx.room.Entity
 import java.math.BigDecimal

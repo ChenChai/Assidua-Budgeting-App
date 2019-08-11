@@ -1,4 +1,4 @@
-package ai.assidua.assidua_android
+package app.assidua.assidua_android
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -11,12 +11,11 @@ import com.google.android.material.tabs.TabLayout
 
 import java.util.ArrayList
 
-import ai.assidua.assidua_android.data.Budget
-import ai.assidua.assidua_android.data.ExpenditureViewModel
-import ai.assidua.assidua_android.util.BackPressable
+import app.assidua.assidua_android.data.Budget
+import app.assidua.assidua_android.data.ExpenditureViewModel
+import app.assidua.assidua_android.util.BackPressable
 import android.util.Log
 import androidx.lifecycle.Observer
-import app.assidua.assidua_android.R
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,14 +1,13 @@
-package ai.assidua.assidua_android
+package app.assidua.assidua_android
 
-import ai.assidua.assidua_android.data.Budget
-import ai.assidua.assidua_android.data.ExpenditureViewModel
+import app.assidua.assidua_android.data.Budget
+import app.assidua.assidua_android.data.ExpenditureViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import app.assidua.assidua_android.R
 import kotlinx.android.synthetic.main.fragment_create_budget.view.*
 import java.math.BigDecimal
 

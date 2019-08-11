@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_coin_round_no_border"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="ai.assidua.assidua_android.BudgetSettingsActivity"></activity>
-        <activity android:name="ai.assidua.assidua_android.MainActivity">
+        <activity android:name=".BudgetSettingsActivity"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

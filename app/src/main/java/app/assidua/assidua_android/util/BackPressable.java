@@ -1,4 +1,4 @@
-package ai.assidua.assidua_android.util;
+package app.assidua.assidua_android.util;
 
 public interface BackPressable {
     /**

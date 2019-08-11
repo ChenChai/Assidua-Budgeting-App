@@ -1,19 +1,21 @@
-package ai.assidua.assidua_android
+package app.assidua.assidua_android
 
-import ai.assidua.assidua_android.data.Budget
-import ai.assidua.assidua_android.data.Expenditure
-import ai.assidua.assidua_android.data.ExpenditureViewModel
+import android.content.res.Configuration
+import app.assidua.assidua_android.data.Budget
+import app.assidua.assidua_android.data.Expenditure
+import app.assidua.assidua_android.data.ExpenditureViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import app.assidua.assidua_android.R
 import kotlinx.android.synthetic.main.fragment_display_budget.*
 import kotlinx.android.synthetic.main.fragment_display_budget.view.*
 import java.math.BigDecimal
@@ -119,7 +121,7 @@ class DisplayBudgetFragment : Fragment() {
 
 //        Log.d(TAG, "Budget '${budget?.name}' just had its observer called! Balance: ${budget?.balance}")
 
-        adapter.setExpenditures(budget?.expenditures)
+        adapter.setBudget(budget)
 
         // Scroll to the top to see the most recently added transaction
         expendituresRecyclerView.smoothScrollToPosition(
@@ -167,7 +169,21 @@ class DisplayBudgetFragment : Fragment() {
         view.addExpenditureButton.setOnClickListener(clickListener)
         view.undoExpenditureButton.setOnClickListener(clickListener)
 
-        adapter = ExpenditureAdapter()
+        adapter = ExpenditureAdapter(
+                // Show the header to insert stuff as part of the recyclerView if we're in portrait mode.
+                resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+        ) {parent ->
+
+
+            val baseView = LayoutInflater.from(parent.context).inflate(R.layout.header_viewholder, parent, false)
+            return@ExpenditureAdapter HeaderViewHolder(baseView, viewModel,
+                        Transformations.switchMap(budgets){
+                            val budgetLiveData: MutableLiveData<Budget> = MutableLiveData()
+                            budgetLiveData.value = viewModel.getBudget(budgetId)
+                            return@switchMap budgetLiveData
+                        }
+                    )
+        }
 
         val layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, true)
         layoutManager.stackFromEnd = true

@@ -1,6 +1,6 @@
-package ai.assidua.assidua_android.data
+package app.assidua.assidua_android.data
 
-import ai.assidua.assidua_android.util.CsvBudgetIoUtil
+import app.assidua.assidua_android.util.CsvBudgetIoUtil
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
