@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Original Colors-
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    -->
-
     <color name="colorPrimary">#5E478F</color>
     <color name="colorPrimaryDark">#4A2A96</color>
     <color name="colorAccent">#CFA800</color>
@@ -13,6 +7,6 @@
     <color name="colorGold">#FFCF00</color>
 
     <color name="colorPositive">@color/colorPrimaryDark</color>
-    <color name="colorNegative">#FF0000</color>
-    <color name="colorNeutral">#6D6D6D</color>
+    <color name="colorNegative">@color/colorPrimaryDark</color>
+    <color name="colorNeutral">@color/colorPrimaryDark</color>
 </resources>
